@@ -8,12 +8,13 @@ function SignIn() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle sign-in logic here
-    console.log('Sign in:', { email, password });
+    // TODO: Implement authentication API call
   };
 
   return (
     <div className="signin-container">
       <div className="signin-left">
+        {/* TODO: Replace with locally hosted image for production */}
         <img 
           src="https://images.unsplash.com/photo-1574158622682-e40e69881006?w=600&h=800&fit=crop" 
           alt="Cute cat" 
@@ -46,7 +47,7 @@ function SignIn() {
                 required
               />
             </div>
-            <a href="#forgot-password" className="forgot-password">Forget Password</a>
+            <a href="#forgot-password" className="forgot-password">Forgot Password</a>
             <button type="submit" className="signin-button">Log in</button>
           </form>
         </div>
