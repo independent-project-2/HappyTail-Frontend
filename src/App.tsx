@@ -5,9 +5,9 @@ function App() {
 
   return (
     <>
-      <div >
-        <h1>Happy Tail Frontend</h1>
-        </div>  
+      <div className="App flex flex-col items-center justify-center h-screen ">
+        <h1 className="text-4xl font-bold ">Welcome to HappyTail!</h1>
+      </div>
     </>
   )
 }
