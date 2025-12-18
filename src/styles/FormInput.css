@@ -1,0 +1,55 @@
+/**
+ * Form Input Component Styles
+ * Reusable styled input fields
+ */
+
+.form-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.form-input-label {
+  font-size: 15px;
+  font-weight: 500;
+  color: #2d2d2d;
+  letter-spacing: 0.3px;
+}
+
+.form-input-field {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 15px;
+  color: #2d2d2d;
+  background-color: #ffffff;
+  border: 1px solid #d4d4d4;
+  border-radius: 6px;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-input-field::placeholder {
+  color: #a0a0a0;
+}
+
+.form-input-field:focus {
+  border-color: #8b7fc8;
+  box-shadow: 0 0 0 3px rgba(139, 127, 200, 0.1);
+}
+
+.form-input-field.form-input-error {
+  border-color: #e74c3c;
+}
+
+.form-input-field.form-input-error:focus {
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.form-input-error-message {
+  font-size: 13px;
+  color: #e74c3c;
+  margin-top: -4px;
+  display: block;
+}
