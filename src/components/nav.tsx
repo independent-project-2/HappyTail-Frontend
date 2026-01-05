@@ -1,7 +1,14 @@
-import { useState } from "react";
+import { useState  } from "react";
+import { useNavigate } from "react-router-dom";
+
+
+
+
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  
+  const router = useNavigate();
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-transparent backdrop-blur-sm">
@@ -34,7 +41,7 @@ export default function Navbar() {
 
           {/* Ask me button */}
             <div className="hidden md:block">
-                <button className="bg-[#9A93FF] text-white px-4 py-2 rounded-full hover:bg-[#827afe] font-medium">
+                <button onClick={() => router('/ask-me')} className="bg-[#9A93FF] text-white px-4 py-2 rounded-full hover:bg-[#827afe] font-medium">
                     Ask me
                 </button>
             </div>
