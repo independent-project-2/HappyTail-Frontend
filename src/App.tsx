@@ -1,8 +1,10 @@
-
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import Loading from './pages/loading';
+import Navbar from './components/nav';
+import Chatbot from './pages/chatbot';
 import './App.css';
 
 /**
@@ -11,10 +13,11 @@ import './App.css';
  */
 function App() {
   return (
-    <Router>
+    <>
+      <Navbar />
       <Routes>
-        {/* Redirect root to sign up page */}
-        <Route path="/" element={<Navigate to="/signup" replace />} />
+        {/* Loading page */}
+        <Route path="/" element={<Loading />} />
         
         {/* Authentication Routes */}
         <Route path="/signup" element={<SignUp />} />
@@ -23,12 +26,15 @@ function App() {
         {/* Protected Routes */}
         <Route path="/home" element={<Home />} />
         
+        {/* Chatbot Route */}
+        <Route path="/ask-me" element={<Chatbot />} />
+        
         {/* Placeholder Routes */}
         <Route path="/browse-pets" element={<Home />} />
         <Route path="/blog" element={<Home />} />
         <Route path="/about" element={<Home />} />
       </Routes>
-    </Router>
+    </>
   );
 }
 
