@@ -87,23 +87,24 @@ export default function Blog() {
         <div className="rounded-[10px] bg-[#FFF] shadow-lg w-[407px] h-[567px] absolute left-[918px] top-0"></div>
       </div>
       <img
-        src="/Rectangle11.png"
+        src="/assets/Images/piclogo.png"
         className="rounded-2xl w-[360px] h-[265px] absolute left-[81px] top-[708px] max-w-none"
         alt="Rectangle 11"
       />
       <img
-        src="/Rectangle12.png"
+        src="/assets/Images/piclogo.png"
         className="rounded-2xl w-[360px] h-[265px] absolute left-[542px] top-[708px] max-w-none"
         alt="Rectangle 12"
       />
       <img
-        src="/Rectangle13.png"
+        src="/assets/Images/piclogo.png"
         className="rounded-2xl w-[360px] h-[265px] absolute left-[1003px] top-[708px] max-w-none"
         alt="Rectangle 13"
       />
       <p className="text-[#000] font-youngSerif text-[25px] w-[372px] h-[70px] absolute left-[81px] top-[997px]">
         is simply dummy text printing
       </p>
+
       <p className="text-[#696767] font-abhayaLibreMedium text-[22px] font-medium w-[363px] h-[98px] absolute left-[81px] top-[1091px]">
          is simply dummy text of the printing and typesetting Ipsum has been the
         industry's
