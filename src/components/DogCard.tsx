@@ -1,3 +1,5 @@
+import { useState } from "react";
+import ViewPets from "./ViewPets";
 
 interface DogCardProps {
     imageUrl: string;
@@ -12,6 +14,12 @@ interface DogCardProps {
 export default function DogCard(
     props: DogCardProps
 ) {
+
+    const [viewPets , setViewPets] = useState(false);
+
+    function handleViewPets() {
+        setViewPets(true);
+    }
 
     return (
         <>
@@ -28,11 +36,16 @@ export default function DogCard(
                     <div className="text-gray-500 font-medium">{props.description}</div>
                     <div className="text-lg font-semibold">{props.price}</div>
 
-                    <button className="absolute right-0 bottom-0 text-purple-700 border-2 border-purple-700 border-solid rounded-xl p-2 m-2 hover:bg-purple-700 hover:text-white transition-colors">
+                    
+                    
+                    <button 
+                    onClick={handleViewPets}
+                    className="absolute right-0 bottom-0 text-purple-700 border-2 border-purple-700 border-solid rounded-xl p-2 m-2 hover:bg-purple-700 hover:text-white transition-colors">
                         View More
                     </button>
                 </div>
             </div>
+            {viewPets && <ViewPets onClose={() => setViewPets(false)} />}
         </>
     )
 }
