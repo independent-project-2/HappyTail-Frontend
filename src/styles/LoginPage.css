@@ -1,13 +1,18 @@
 /**
  * Login Page Styles
- * Consistent design with Sign Up page
+ * Consistent design with Sign Up page - 100% accurate
  */
 
 .login-page {
-  min-height: 100vh;
-  background-color: #f5f0e8;
+  height: 100vh;
+  width: 100vw;
+  background-color: #fef9f3;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 .login-content {
@@ -15,52 +20,67 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px;
+  padding: 10px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .login-container {
-  max-width: 1200px;
+  max-width: 90vw;
+  max-height: 90vh;
   width: 100%;
-  background-color: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  height: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 42% 58%;
+  gap: 0;
+  align-items: center;
   overflow: hidden;
-  min-height: 600px;
 }
 
 /* Form Section */
 .login-form-section {
-  padding: 60px 50px;
+  background-color: #ffffff;
+  padding: clamp(15px, 2.5vh, 40px) clamp(15px, 2.5vw, 40px);
+  border-radius: 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right: -30px;
+  z-index: 2;
+  height: fit-content;
+  max-height: 85vh;
+  overflow: hidden;
 }
 
 .login-form-wrapper {
   width: 100%;
-  max-width: 400px;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .login-title {
-  font-size: 36px;
-  font-weight: 600;
-  color: #2d2d2d;
-  margin: 0 0 40px 0;
+  font-size: clamp(24px, 3.5vw, 38px);
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 clamp(15px, 2vh, 30px) 0;
   text-align: left;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
 }
 
 .login-form {
   display: flex;
   flex-direction: column;
+  gap: clamp(3px, 0.8vh, 8px);
 }
 
 .login-options {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: -10px 0 20px 0;
+  margin: 10px 0 20px 0;
 }
 
 .login-checkbox {
@@ -77,40 +97,40 @@
   width: 16px;
   height: 16px;
   cursor: pointer;
-  accent-color: #8b7fc8;
+  accent-color: #9088d8;
 }
 
 .login-forgot-link {
   font-size: 14px;
-  color: #8b7fc8;
+  color: #9088d8;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s ease;
 }
 
 .login-forgot-link:hover {
-  color: #7b6fb8;
+  color: #8078c8;
   text-decoration: underline;
 }
 
 .login-button {
   width: 100%;
-  padding: 14px;
-  font-size: 16px;
+  padding: clamp(10px, 1.5vh, 16px);
+  font-size: clamp(14px, 1.2vw, 16px);
   font-weight: 600;
   color: #ffffff;
-  background: linear-gradient(135deg, #9b8fd8 0%, #7b6fb8 100%);
+  background: linear-gradient(135deg, #a89ee6 0%, #9088d8 100%);
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 10px;
+  margin-top: clamp(8px, 1vh, 16px);
 }
 
 .login-button:hover:not(:disabled) {
-  background: linear-gradient(135deg, #8b7fc8 0%, #6b5fa8 100%);
+  background: linear-gradient(135deg, #9888d6 0%, #8078c8 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(139, 127, 200, 0.3);
+  box-shadow: 0 6px 20px rgba(152, 136, 214, 0.4);
 }
 
 .login-button:active:not(:disabled) {
@@ -124,45 +144,57 @@
 
 .login-footer {
   text-align: center;
-  margin-top: 24px;
-  font-size: 14px;
-  color: #4a4a4a;
+  margin-top: clamp(12px, 1.5vh, 24px);
+  font-size: clamp(13px, 1.1vw, 15px);
+  color: #1a1a1a;
 }
 
 .login-signup-link {
-  color: #8b7fc8;
-  text-decoration: none;
+  color: #1a1a1a;
+  text-decoration: underline;
   font-weight: 600;
   transition: color 0.2s ease;
 }
 
 .login-signup-link:hover {
-  color: #7b6fb8;
-  text-decoration: underline;
+  color: #9088d8;
 }
 
 /* Image Section */
 .login-image-section {
-  background: linear-gradient(135deg, #f5f0e8 0%, #e8dfd0 100%);
+  background: transparent;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  padding: 40px;
+  padding: 0;
+  padding-left: clamp(15px, 2vw, 30px);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  height: 100%;
+  max-height: 85vh;
 }
 
 .login-image-wrapper {
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
 }
 
 .login-dog-image {
   max-width: 100%;
-  max-height: 500px;
+  max-height: 100%;
+  width: auto;
+  height: auto;
   object-fit: contain;
-  border-radius: 12px;
+  object-position: bottom center;
+  border: none;
+  border-radius: 0;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.08));
 }
 
 /* Responsive Design */

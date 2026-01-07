@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
 import '../styles/Home.css';
 
 /**
@@ -42,9 +41,6 @@ const Home: React.FC = () => {
 
   return (
     <div className="home-page">
-      {/* Navigation Bar */}
-      <Navbar />
-
       {/* Main Content */}
       <main className="home-main">
         <div className="home-container">

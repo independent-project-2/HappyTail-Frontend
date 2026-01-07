@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
 import FormInput from '../components/FormInput';
 import '../styles/SignUpPage.css';
 
@@ -121,9 +120,6 @@ const SignUp: React.FC = () => {
 
   return (
     <div className="signup-page">
-      {/* Navigation Bar */}
-      <Navbar />
-
       {/* Main Content */}
       <div className="signup-content">
         <div className="signup-container">
@@ -201,7 +197,7 @@ const SignUp: React.FC = () => {
           <div className="signup-image-section">
             <div className="signup-image-wrapper">
               <img
-                src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?q=80&w=800&auto=format&fit=crop"
+                src="/assets/Images/5184127ebcbd53fe761cd4962df4875947ccd85f.png"
                 alt="Golden Retriever Puppy"
                 className="signup-dog-image"
               />
