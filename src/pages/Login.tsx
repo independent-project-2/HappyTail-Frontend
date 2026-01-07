@@ -171,7 +171,7 @@ const Login: React.FC = () => {
           <div className="login-image-section">
             <div className="login-image-wrapper">
               <img
-                src="/assets/Images/5184127ebcbd53fe761cd4962df4875947ccd85f.png"
+                src="/assets/Images/1220ca60f061c741e0d04b9305745bf48e653e8d.png"
                 alt="Golden Retriever Puppy"
                 className="login-dog-image"
               />
