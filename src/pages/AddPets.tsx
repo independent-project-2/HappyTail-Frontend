@@ -1,4 +1,5 @@
 import React from 'react'
+import ImageUpload from '../components/ImageUpload'
 
 function AddPets() {
     return (
@@ -96,25 +97,23 @@ function AddPets() {
 
                         <div className='flex flex-row'>
                             <div className='flex flex-col gap-1 justify-center items-center'>
-                                <div>
-                                    <input type="file" id='image-1' name='image-1'
-                                        className='box-content size-32 bg-gray-300 mr-3 rounded-lg' />
+                                <div className='mr-5'>
+                                   <ImageUpload/>
+                                   
                                 </div>
                                 <label htmlFor='image-1'>Image 1</label>
                             </div>
 
                             <div className='flex flex-col gap-1 justify-center items-center'>
-                                <div>
-                                    <input type="file" id='image-2' name='image-2'
-                                        className='box-content size-32 bg-gray-300 mr-3 rounded-lg' />
+                                <div className='mr-5'>
+                                    <ImageUpload/>
                                 </div>
                                 <label htmlFor='image-2'>Image 2</label>
                             </div>
 
                             <div className='flex flex-col gap-1 justify-center items-center'>
                                 <div>
-                                    <input type="file" id='image-3' name='image-3'
-                                        className='box-content size-32 bg-gray-300 rounded-lg' />
+                                    <ImageUpload/>
                                 </div>
                                 <label htmlFor='image-3'>Image 3</label>
                             </div>
