@@ -39,17 +39,17 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* Buttons */}
+          
           <div className="hidden md:flex items-center space-x-4">
             <button onClick={() => router('/ask-me')} className="bg-[#9A93FF] text-white px-4 py-2 rounded-full hover:bg-[#827afe] font-medium">
               Ask me
             </button>
-            <button onClick={() => router('/login')} className="text-[#9A93FF] border-2 border-[#9A93FF] px-4 py-2 rounded-full hover:bg-[#9A93FF] hover:text-white font-medium transition-all">
+            {/* Buttons <button onClick={() => router('/login')} className="text-[#9A93FF] border-2 border-[#9A93FF] px-4 py-2 rounded-full hover:bg-[#9A93FF] hover:text-white font-medium transition-all">
               Login
             </button>
             <button onClick={() => router('/signup')} className="bg-[#9A93FF] text-white px-4 py-2 rounded-full hover:bg-[#827afe] font-medium">
               Sign Up
-            </button>
+            </button>*/}
           </div>
 
 
