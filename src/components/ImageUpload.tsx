@@ -63,7 +63,7 @@ const ImageUpload = () => {
           className="h-full w-full rounded-xl object-cover"
         />
       ) : (
-        <div className="text-center text-gray-500">
+        <div className="p-2 text-center text-gray-500">
           <p className="text-sm">Drag & drop an image here</p>
           <p className="text-xs mt-1">or click to upload</p>
         </div>
