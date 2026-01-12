@@ -6,12 +6,12 @@
 .form-input-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: 5px;
+  margin-bottom: 10px;
 }
 
 .form-input-label {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   color: #2d2d2d;
   letter-spacing: 0.3px;
@@ -19,8 +19,8 @@
 
 .form-input-field {
   width: 100%;
-  padding: 12px 16px;
-  font-size: 15px;
+  padding: 8px 12px;
+  font-size: 14px;
   color: #2d2d2d;
   background-color: #ffffff;
   border: 1px solid #d4d4d4;
@@ -48,9 +48,9 @@
 }
 
 .form-input-error-message {
-  font-size: 13px;
+  font-size: 11px;
   color: #e74c3c;
-  margin-top: -4px;
+  margin-top: -2px;
   display: block;
 }
 

@@ -17,7 +17,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 10px;
   width: 100%;
   min-height: 0;
 }
@@ -26,22 +26,30 @@
   max-width: 1300px;
   width: 90%;
   display: grid;
-  grid-template-columns: minmax(400px, 480px) 1fr;
-  gap: 40px;
+  grid-template-columns: minmax(380px, 420px) 1fr;
+  gap: 30px;
   align-items: center;
   justify-items: center;
-  max-height: calc(100vh - 100px);
+  max-height: calc(100vh - 40px);
+}
+
+/* When only form is visible (single column) */
+.signup-container:has(.signup-image-section[style*="display: none"]),
+.signup-container:has(.signup-image-section:not(:visible)) {
+  justify-items: center;
 }
 
 /* Form Section */
 .signup-form-section {
   background-color: #ffffff;
-  padding: 20px 28px;
+  padding: 12px 20px;
   border-radius: 18px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   width: 100%;
-  max-width: 480px;
+  max-width: 420px;
   justify-self: end;
+  overflow-y: auto;
+  max-height: calc(100vh - 60px);
 }
 
 .signup-form-wrapper {
@@ -49,10 +57,10 @@
 }
 
 .signup-title {
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 700;
   color: #1a1a1a;
-  margin: 0 0 14px 0;
+  margin: 0 0 8px 0;
   text-align: left;
   letter-spacing: -0.5px;
   line-height: 1.2;
@@ -61,13 +69,13 @@
 .signup-form {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 2px;
 }
 
 .signup-button {
   width: 100%;
-  padding: 12px;
-  font-size: 15px;
+  padding: 8px;
+  font-size: 13px;
   font-weight: 600;
   color: #ffffff;
   background: linear-gradient(135deg, #a89ee6 0%, #9088d8 100%);
@@ -75,7 +83,7 @@
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 .signup-button:hover:not(:disabled) {
@@ -95,8 +103,8 @@
 
 .signup-footer {
   text-align: center;
-  margin-top: 14px;
-  font-size: 14px;
+  margin-top: 8px;
+  font-size: 12px;
   color: #1a1a1a;
 }
 
@@ -133,7 +141,7 @@
 .signup-dog-image {
   width: auto;
   height: auto;
-  max-height: calc(100vh - 150px);
+  max-height: calc(100vh - 60px);
   max-width: 100%;
   object-fit: contain;
   object-position: center;
@@ -146,8 +154,9 @@
 @media (max-width: 1024px) {
   .signup-container {
     grid-template-columns: 1fr;
-    max-width: 600px;
-    padding: 20px;
+    max-width: 500px;
+    padding: 15px;
+    justify-items: center;
   }
 
   .signup-image-section {
@@ -155,9 +164,11 @@
   }
 
   .signup-form-section {
+    justify-self: center;
     margin-right: 0;
-    padding: clamp(25px, 4vh, 50px) clamp(25px, 5vw, 50px);
+    padding: 25px 30px;
     border-radius: 20px;
+    max-width: 100%;
   }
 
   .signup-page {
