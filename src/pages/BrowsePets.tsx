@@ -12,10 +12,11 @@ const dummyDogCardProps = {
 export default function BrowsePets() {
     return (
         <>
-            <div className="h-screen bg-white">
-                <form onSubmit={() => { }} className="flex flex-row p-10 gap-10 justify-center mt-20">
+            <div className="min-h-screen bg-white overflow-auto">
+                <form onSubmit={() => { }} 
+                className="flex flex-col md:flex-row p-4 md:p-10 gap-4 md:gap-10 justify-center mt-16 md:mt-20">
                     {/* Location Container */}
-                    <div className="relative w-72">
+                    <div className="relative w-full md:w-72">
 
                         {/* The Label: Positioned on the border */}
                         <label
@@ -48,7 +49,7 @@ export default function BrowsePets() {
                     </div>
 
                     {/* Type Container */}
-                    <div className="relative w-72">
+                    <div className="relative w-full md:w-72">
 
                         {/* The Label: Positioned on the border */}
                         <label
@@ -81,7 +82,7 @@ export default function BrowsePets() {
                     </div>
 
                     {/* Price Container */}
-                    <div className="relative w-72">
+                    <div className="relative w-full md:w-72">
 
                         {/* The Label: Positioned on the border */}
                         <label
@@ -114,12 +115,12 @@ export default function BrowsePets() {
                     </div>
 
 
-                    <button className="block w-50 bg-purple-500 border border-gray-700 text-white py-3 px-4 pr-8 rounded leading-tight focus:outline-border font-bold text-2xl" type="submit">Search</button>
+                    <button className="block w-full md:w-50 bg-purple-500 border border-gray-700 text-white py-3 px-4 pr-8 rounded leading-tight focus:outline-border font-bold text-xl md:text-2xl" type="submit">Search</button>
                 </form>
 
                 <div>
                     {/* Dog Cards Grid */}
-                    <div className="grid grid-cols-4 gap-10 px-20 mt-10">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-10 px-4 md:px-20 mt-10">
                         {Array.from({ length: 6 }).map((_, index) => (
                             <DogCard key={index} {...dummyDogCardProps} />
                         ))}
