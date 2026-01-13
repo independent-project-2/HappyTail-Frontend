@@ -83,7 +83,7 @@ export default function Blog() {
       <div className="w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12">
         {/* Header Section */}
         <div className="text-center mb-8 sm:mb-10 md:mb-12">
-          <h1 className="font-medium text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center mb-4 sm:mb-6 text-purple-500">
+          <h1 className="font-medium text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center mb-4 sm:mb-6 text-black">
             About your pets knowledge
           </h1>
           <p className="text-[#595858] font-alegreya text-base sm:text-lg md:text-xl font-medium max-w-2xl mx-auto">
