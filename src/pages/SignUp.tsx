@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import FormInput from '../components/FormInput';
-import '../styles/SignUpPage.css';
 
 /**
  * SignUp Page Component
@@ -119,16 +118,18 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div className="signup-page">
+    <div className="h-screen w-full bg-[#fef9f3] flex flex-col overflow-hidden">
       {/* Main Content */}
-      <div className="signup-content">
-        <div className="signup-container">
+      <div className="flex-1 flex items-center justify-center p-2.5 w-full min-h-0">
+        <div className="max-w-[1300px] w-[90%] grid grid-cols-[minmax(380px,420px)_1fr] gap-8 items-center justify-items-center max-h-[calc(100vh-40px)] lg:grid-cols-1 lg:max-w-[500px] lg:p-4 lg:justify-items-center">
           {/* Left Side - Form */}
-          <div className="signup-form-section">
-            <div className="signup-form-wrapper">
-              <h1 className="signup-title">Sign Up</h1>
+          <div className="bg-white py-3 px-5 rounded-[18px] shadow-[0_2px_12px_rgba(0,0,0,0.06)] w-full max-w-[420px] justify-self-end overflow-y-auto max-h-[calc(100vh-60px)] lg:justify-self-center lg:mx-0 lg:py-6 lg:px-7 lg:rounded-[20px] lg:max-w-full">
+            <div className="w-full">
+              <h1 className="text-[22px] font-bold text-[#1a1a1a] my-0 mb-2 text-left tracking-[-0.5px] leading-tight">
+                Sign Up
+              </h1>
 
-              <form onSubmit={handleSubmit} className="signup-form">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-0.5">
                 {/* Name Field */}
                 <FormInput
                   label="Name"
@@ -176,7 +177,7 @@ const SignUp: React.FC = () => {
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="signup-button"
+                  className="w-full py-2 text-[13px] font-semibold text-white bg-gradient-to-br from-[#a89ee6] to-[#9088d8] border-none rounded-xl cursor-pointer transition-all duration-300 mt-1 hover:bg-gradient-to-br hover:from-[#9888d6] hover:to-[#8078c8] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(152,136,214,0.4)] active:translate-y-0 disabled:opacity-60 disabled:cursor-not-allowed"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? 'Signing Up...' : 'Sign Up'}
@@ -184,9 +185,12 @@ const SignUp: React.FC = () => {
               </form>
 
               {/* Login Link */}
-              <p className="signup-footer">
+              <p className="text-center mt-2 text-xs text-[#1a1a1a]">
                 Already have an account?{' '}
-                <Link to="/login" className="signup-login-link">
+                <Link 
+                  to="/login" 
+                  className="text-[#1a1a1a] underline font-semibold transition-colors duration-200 hover:text-[#9088d8]"
+                >
                   Log in
                 </Link>
               </p>
@@ -194,12 +198,12 @@ const SignUp: React.FC = () => {
           </div>
 
           {/* Right Side - Image */}
-          <div className="signup-image-section">
-            <div className="signup-image-wrapper">
+          <div className="flex items-center justify-start w-full h-full max-h-[calc(100vh-120px)] justify-self-start lg:hidden">
+            <div className="w-full h-full flex items-center justify-center">
               <img
                 src="/assets/Images/5184127ebcbd53fe761cd4962df4875947ccd85f.png"
                 alt="Golden Retriever Puppy"
-                className="signup-dog-image"
+                className="w-auto h-auto max-h-[calc(100vh-60px)] max-w-full object-contain object-center drop-shadow-[0_4px_8px_rgba(0,0,0,0.08)]"
               />
             </div>
           </div>

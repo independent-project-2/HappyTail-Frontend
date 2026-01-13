@@ -4,7 +4,6 @@ import Login from './pages/Login';
 import Loading from './pages/loading';
 import Navbar from './components/nav';
 import Chatbot from './pages/chatbot';
-import './App.css';
 
 /**
  * Main App Component
