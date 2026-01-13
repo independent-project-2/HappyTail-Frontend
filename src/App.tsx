@@ -6,10 +6,6 @@ import Navbar from './components/nav';
 import Chatbot from './pages/chatbot';
 import './App.css';
 
-/**
- * Main App Component
- * Configures routing for the application
- */
 function App() {
   return (
     <>
