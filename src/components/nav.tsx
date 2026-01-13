@@ -17,8 +17,8 @@ export default function Navbar() {
           {/* Logo */}
           <div className="shrink-0">
             <img
-              className="h-15 w-auto"
-              src="/assets/Images/logo.png"
+              className="h-35 w-auto"
+              src="/assets/Images/textlogo.png"
               alt="Logo"
             />
           </div>
