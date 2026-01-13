@@ -1,7 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
-import Home from './pages/Home';
 import Loading from './pages/loading';
 import Navbar from './components/nav';
 import Chatbot from './pages/chatbot';
@@ -23,16 +22,14 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         
-        {/* Protected Routes */}
-        <Route path="/home" element={<Home />} />
-        
         {/* Chatbot Route */}
         <Route path="/ask-me" element={<Chatbot />} />
         
-        {/* Placeholder Routes */}
-        <Route path="/browse-pets" element={<Home />} />
-        <Route path="/blog" element={<Home />} />
-        <Route path="/about" element={<Home />} />
+        {/* Redirect old routes to loading */}
+        <Route path="/home" element={<Navigate to="/" replace />} />
+        <Route path="/browse-pets" element={<Navigate to="/" replace />} />
+        <Route path="/blog" element={<Navigate to="/" replace />} />
+        <Route path="/about" element={<Navigate to="/" replace />} />
       </Routes>
     </>
   );
