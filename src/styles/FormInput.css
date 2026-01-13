@@ -1,0 +1,92 @@
+/**
+ * Form Input Component Styles
+ * Reusable styled input fields
+ */
+
+.form-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.form-input-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #2d2d2d;
+  letter-spacing: 0.3px;
+}
+
+.form-input-field {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #2d2d2d;
+  background-color: #ffffff;
+  border: 1px solid #d4d4d4;
+  border-radius: 6px;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-input-field::placeholder {
+  color: #a0a0a0;
+}
+
+.form-input-field:focus {
+  border-color: #8b7fc8;
+  box-shadow: 0 0 0 3px rgba(139, 127, 200, 0.1);
+}
+
+.form-input-field.form-input-error {
+  border-color: #e74c3c;
+}
+
+.form-input-field.form-input-error:focus {
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.form-input-error-message {
+  font-size: 11px;
+  color: #e74c3c;
+  margin-top: -2px;
+  display: block;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .form-input-group {
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .form-input-label {
+    font-size: 14px;
+  }
+
+  .form-input-field {
+    padding: 11px 14px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-input-group {
+    gap: 5px;
+    margin-bottom: 14px;
+  }
+
+  .form-input-label {
+    font-size: 13px;
+  }
+
+  .form-input-field {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .form-input-error-message {
+    font-size: 12px;
+  }
+}
