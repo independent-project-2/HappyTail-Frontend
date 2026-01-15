@@ -4,6 +4,10 @@ import Login from './pages/Login';
 import Loading from './pages/loading';
 import Navbar from './components/nav';
 import Chatbot from './pages/chatbot';
+import Blog from './pages/blog';
+import BrowsePets from './pages/BrowsePets';
+
+
 import './App.css';
 
 function App() {
@@ -23,8 +27,8 @@ function App() {
         
         {/* Redirect old routes to loading */}
         <Route path="/home" element={<Navigate to="/" replace />} />
-        <Route path="/browse-pets" element={<Navigate to="/" replace />} />
-        <Route path="/blog" element={<Navigate to="/" replace />} />
+        <Route path="/browse-pets" element={<BrowsePets />} />
+        <Route path="/blog" element={<Blog />} />
         <Route path="/about" element={<Navigate to="/" replace />} />
       </Routes>
     </>
