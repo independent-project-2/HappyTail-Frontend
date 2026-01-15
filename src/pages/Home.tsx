@@ -39,7 +39,7 @@ const heroSlides = [
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0)
 
-  // Lock body scroll
+  // Disable page scroll while hero section is active
   useEffect(() => {
     document.body.style.overflow = "hidden"
     return () => {
@@ -47,7 +47,16 @@ export default function Home() {
     }
   }, [])
 
-  // Desktop wheel
+  // Helper for looping slides
+  const nextSlide = (direction: number) => {
+    setCurrentSlide((prev) => {
+      const total = heroSlides.length
+      // direction: 1 = down/next, -1 = up/prev
+      return (prev + direction + total) % total 
+    })
+  }
+
+  // Desktop continuous scroll
   useEffect(() => {
     let ticking = false
     const handleWheel = (e: WheelEvent) => {
@@ -55,13 +64,10 @@ export default function Home() {
       if (ticking) return
       ticking = true
 
-      if (e.deltaY > 0) {
-        setCurrentSlide((p) => Math.min(p + 1, heroSlides.length - 1))
-      } else {
-        setCurrentSlide((p) => Math.max(p - 1, 0))
-      }
+      if (e.deltaY > 0) nextSlide(1) // scroll down
+      else nextSlide(-1) // scroll up
 
-      setTimeout(() => (ticking = false), 500)
+      setTimeout(() => (ticking = false), 500) 
     }
 
     window.addEventListener("wheel", handleWheel, { passive: false })
@@ -84,11 +90,10 @@ export default function Home() {
       if (Math.abs(diff) < 50) return
 
       ticking = true
-      diff > 0
-        ? setCurrentSlide((p) => Math.min(p + 1, heroSlides.length - 1))
-        : setCurrentSlide((p) => Math.max(p - 1, 0))
-
+      diff > 0 ? nextSlide(1) : nextSlide(-1)
       setTimeout(() => (ticking = false), 500)
+
+      startY = e.touches[0].clientY
     }
 
     window.addEventListener("touchstart", onTouchStart, { passive: false })
@@ -104,31 +109,28 @@ export default function Home() {
 
   return (
     <div
-      className={`h-screen w-screen flex flex-col lg:flex-row items-center justify-center bg-linear-to-b ${slide.bgColor} transition-all duration-700`}
+      className={`h-screen w-screen flex flex-col lg:flex-row items-center justify-center bg-linear-to-b ${slide.bgColor} transition-all duration-700 `}
     >
       {/* LEFT — Text Content */}
-      <div className="flex-1 w-full max-w-2xl px-4 sm:px-6 lg:px-8 flex flex-col justify-center space-y-6 lg:space-y-8 min-h-[50vh] lg:min-h-full">
+      <div className="mt-30 lg:mt-0 flex-1 w-full max-w-2xl px-4 sm:px-6 lg:px-8 flex flex-col justify-center space-y-0.5 lg:space-y-8 min-h-[50vh] lg:min-h-full">
         <h1
           className={`font-bold leading-tight transition-colors duration-700 ${slide.textColor} text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl`}
         >
           Find Your <span className={slide.accentColor}>Furry</span> Friend Today
         </h1>
-
         <p
           className={`opacity-80 transition-colors duration-700 ${slide.textColor} text-sm sm:text-base md:text-lg lg:text-xl`}
         >
-          Every pet deserves a loving home. Adopt, foster, or reconnect pets with families — we make meaningful
+          Every pet deserves a loving home. Adopt, foster, or reconnect pets with families, we make meaningful
           connections that last.
         </p>
-
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-3">
           <button
             className={`flex items-center justify-center gap-2 rounded-lg px-6 py-2 sm:px-8 text-sm sm:text-base font-semibold shadow-lg transition-all hover:scale-105 ${slide.buttonBg} text-white`}
           >
             <PawPrint className="h-4 w-4 sm:h-5 sm:w-5" />
             Adopt Now
           </button>
-
           <button
             className={`flex items-center justify-center gap-2 rounded-lg px-6 py-2 sm:px-8 text-sm sm:text-base font-semibold border-2 transition-all hover:scale-105 ${slide.buttonOutline}`}
           >
@@ -139,10 +141,10 @@ export default function Home() {
       </div>
 
       {/* RIGHT — Image */}
-      <div className="flex-1 w-full flex justify-center lg:justify-end mt-6 lg:mt-0 px-4 sm:px-6">
+      <div className="flex-1 w-full flex justify-center lg:justify-end mt-0 lg:mt-0 px-4 sm:px-6 pt-5">
         <div
           className="
-            w-full max-w-[250px] sm:max-w-[300px] md:max-w-[400px] lg:max-w-[520px] 
+            w-full max-w-[500px] sm:max-w-[700px] md:max-w-[800px] lg:max-w-[520px] 
             h-[35vh] sm:h-[40vh] md:h-[50vh] lg:h-auto 
             aspect-[4/5] sm:aspect-[3/4] md:aspect-[4/5]
             flex justify-center items-center
@@ -151,7 +153,7 @@ export default function Home() {
           <img
             src={slide.image}
             alt={slide.imageAlt}
-            className="w-full h-full object-contain transition-all duration-700"
+            className="w-full h-full object-contain transition-all duration-700 mb-40 lg:mb-0"
             style={{
               maskImage:
                 currentSlide === 2
@@ -168,4 +170,3 @@ export default function Home() {
     </div>
   )
 }
-
