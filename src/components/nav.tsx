@@ -25,23 +25,23 @@ export default function Navbar() {
 
           {/* Desktop Links */}
           <div className="hidden md:flex space-x-8">
-            <a href="/home" className="text-black hover:text-[#9A93FF] font-medium">
+            <a onClick={()=>router('/home')} className="text-black hover:text-[#9A93FF] font-medium cursor-pointer">
               Home
             </a>
-            <a href="/browse-pets" className="text-black hover:text-[#9A93FF] font-medium">
+            <a onClick={()=>router('/browse-pets')} className="text-black hover:text-[#9A93FF] font-medium cursor-pointer">
               Browse Pets
             </a>
-            <a href="/blog" className="text-black hover:text-[#9A93FF] font-medium">
+            <a onClick={()=>router('/blog')} className="text-black hover:text-[#9A93FF] font-medium cursor-pointer">
               Blog
             </a>
-            <a href="/about" className="text-black hover:text-[#9A93FF] font-medium">
+            <a onClick={()=>router('/about')} className="text-black hover:text-[#9A93FF] font-medium cursor-pointer">
               About
             </a>
           </div>
 
           
           <div className="hidden md:flex items-center space-x-4">
-            <button onClick={() => router('/ask-me')} className="bg-[#9A93FF] text-white px-4 py-2 rounded-full hover:bg-[#827afe] font-medium">
+            <button onClick={() => router('/ask-me')} className="bg-[#9A93FF] text-white px-4 py-2 rounded-full hover:bg-[#827afe] font-medium cursor-pointer">
               Ask me
             </button>
             {/* Buttons <button onClick={() => router('/login')} className="text-[#9A93FF] border-2 border-[#9A93FF] px-4 py-2 rounded-full hover:bg-[#9A93FF] hover:text-white font-medium transition-all">
