@@ -39,7 +39,7 @@ const heroSlides = [
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0)
 
-  // Disable page scroll while hero section is active
+  // Disable page scroll while hero section is actioned
   useEffect(() => {
     document.body.style.overflow = "hidden"
     return () => {
