@@ -268,7 +268,7 @@ const SignUp: React.FC = () => {
 
           {/* Right Side - Image */}
           <motion.div 
-            className="hidden lg:flex items-center justify-center"
+            className="flex items-center justify-center"
             initial={{ x: 100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -276,7 +276,7 @@ const SignUp: React.FC = () => {
             <img
               src="/assets/Images/5184127ebcbd53fe761cd4962df4875947ccd85f.png"
               alt="Golden Retriever Puppy"
-              className="w-full max-w-lg h-auto object-contain"
+              className="w-full max-w-xs sm:max-w-md lg:max-w-lg h-auto object-contain"
             />
           </motion.div>
         </div>

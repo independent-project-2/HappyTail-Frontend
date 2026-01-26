@@ -117,7 +117,7 @@ const Login: React.FC = () => {
         <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Side - Image */}
           <motion.div 
-            className="hidden lg:flex items-center justify-center"
+            className="flex items-center justify-center order-2 lg:order-1"
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -125,13 +125,13 @@ const Login: React.FC = () => {
             <img
               src="/assets/Images/log cat.png"
               alt="Cat with blue eyes"
-              className="w-full max-w-2xl h-auto object-contain"
+              className="w-full max-w-xs sm:max-w-md lg:max-w-2xl h-auto object-contain"
             />
           </motion.div>
 
           {/* Right Side - Form */}
           <motion.div 
-            className="bg-[#f5f3f0] rounded-2xl p-8 shadow-sm w-full max-w-md mx-auto lg:mx-0"
+            className="bg-[#f5f3f0] rounded-2xl p-8 shadow-sm w-full max-w-md mx-auto lg:mx-0 order-1 lg:order-2"
             initial={{ x: 100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
