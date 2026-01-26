@@ -1,5 +1,5 @@
 import DogCard from "../components/DogCard";
-import ViewPets from "../components/ViewPets";
+
 
 const dummyDogCardProps = {
     imageUrl: "../../assets/images/germen-sheperd.jpg",
