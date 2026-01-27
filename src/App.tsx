@@ -7,6 +7,7 @@ import Navbar from './components/nav';
 import Chatbot from './pages/chatbot';
 import Blog from './pages/blog';
 import BrowsePets from './pages/BrowsePets';
+import Home from './pages/Home';
 
 
 import './App.css';
@@ -17,25 +18,23 @@ function App() {
   return (
     <>
       <Navbar />
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          {/* Loading page */}
-          <Route path="/" element={<Loading />} />
-
-          {/* Authentication Routes */}
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
-
-          {/* Chatbot Route */}
-          <Route path="/ask-me" element={<Chatbot />} />
-
-          {/* Redirect old routes to loading */}
-          <Route path="/home" element={<Navigate to="/" replace />} />
-          <Route path="/browse-pets" element={<BrowsePets />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/about" element={<Navigate to="/" replace />} />
-        </Routes>
-      </AnimatePresence>
+      <Routes>
+        {/* Loading page */}
+        <Route path="/" element={<Loading />} />
+        
+        {/* Authentication Routes */}
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
+        
+        {/* Chatbot Route */}
+        <Route path="/ask-me" element={<Chatbot />} />
+        
+        {/* Redirect old routes to loading */}
+        <Route path="/home" element={<Home />} />
+        <Route path="/browse-pets" element={<BrowsePets />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/about" element={<Navigate to="/" replace />} />
+      </Routes>
     </>
   );
 }
