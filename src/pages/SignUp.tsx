@@ -175,6 +175,7 @@ const SignUp: React.FC = () => {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
+                  placeholder="Enter your full name"
                   error={errors.name}
                   autoComplete="name"
                 />
@@ -193,6 +194,7 @@ const SignUp: React.FC = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
+                placeholder="Enter your email address"
                 error={errors.email}
                 autoComplete="email"
               />
@@ -211,6 +213,7 @@ const SignUp: React.FC = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
+                  placeholder="Create a strong password (min. 6 characters)"
                   error={errors.password}
                   autoComplete="new-password"
                 />
@@ -229,6 +232,7 @@ const SignUp: React.FC = () => {
                   name="confirm"
                   value={formData.confirm}
                   onChange={handleChange}
+                  placeholder="Re-enter your password"
                   error={errors.confirm}
                   autoComplete="new-password"
                 />
