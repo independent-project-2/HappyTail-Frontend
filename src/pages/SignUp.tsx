@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import FormInput from '../components/FormInput';
 import '../styles/SignUpPage.css';
 
@@ -120,13 +119,7 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <motion.div 
-      className="min-h-screen w-full bg-[#fef9f3] flex flex-col relative overflow-hidden"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-    >
+    <div className="min-h-screen w-full bg-[#fef9f3] flex flex-col relative overflow-hidden">
       {/* Top Left Corner Decoration */}
       <div className="absolute top-0 left-0 w-64 h-48 bg-gradient-to-br from-[#d4a574] via-[#d4a574]/50 to-transparent opacity-40 rounded-full blur-3xl"></div>
       {/* Bottom Right Corner Decoration */}
@@ -136,33 +129,14 @@ const SignUp: React.FC = () => {
       <div className="flex-1 flex items-center justify-center px-4 py-8 relative z-10">
         <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Side - Form */}
-          <motion.div 
-            className="bg-[#f5f3f0] rounded-2xl p-8 shadow-sm w-full max-w-md mx-auto lg:mx-0"
-            initial={{ x: -100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
+          <div className="bg-[#f5f3f0] rounded-2xl p-8 shadow-sm w-full max-w-md mx-auto lg:mx-0">
             <h1 className="text-4xl font-bold text-black mb-8">
               Sign Up
             </h1>
 
-            <motion.form 
-              onSubmit={handleSubmit} 
-              className="flex flex-col space-y-4"
-              initial="hidden"
-              animate="visible"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: {
-                    staggerChildren: 0.1,
-                    delayChildren: 0.3
-                  }
-                }
-              }}
-            >
+            <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
               {/* Name Field */}
+<<<<<<< HEAD
               <motion.div
                 variants={{
                   hidden: { opacity: 0, y: 20 },
@@ -180,15 +154,20 @@ const SignUp: React.FC = () => {
                   autoComplete="name"
                 />
               </motion.div>
+=======
+              <FormInput
+                label="Name"
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                error={errors.name}
+                autoComplete="name"
+              />
+>>>>>>> parent of e453773 (add animation in switching login and signup pages and change login page image)
 
               {/* Email Field */}
-              <motion.div
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 }
-                }}
-              >
-                <FormInput
+              <FormInput
                 label="Email"
                 type="email"
                 name="email"
@@ -198,9 +177,9 @@ const SignUp: React.FC = () => {
                 error={errors.email}
                 autoComplete="email"
               />
-              </motion.div>
 
               {/* Password Field */}
+<<<<<<< HEAD
               <motion.div
                 variants={{
                   hidden: { opacity: 0, y: 20 },
@@ -237,22 +216,38 @@ const SignUp: React.FC = () => {
                   autoComplete="new-password"
                 />
               </motion.div>
+=======
+              <FormInput
+                label="Password"
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                error={errors.password}
+                autoComplete="new-password"
+              />
+
+              {/* Confirm Password Field */}
+              <FormInput
+                label="Confirm"
+                type="password"
+                name="confirm"
+                value={formData.confirm}
+                onChange={handleChange}
+                error={errors.confirm}
+                autoComplete="new-password"
+              />
+>>>>>>> parent of e453773 (add animation in switching login and signup pages and change login page image)
 
               {/* Submit Button */}
-              <motion.button
+              <button
                 type="submit"
                 className="w-full py-3 mt-4 text-base font-semibold text-white bg-gradient-to-r from-[#a89ee6] to-[#9088d8] border-none rounded-lg cursor-pointer transition-all duration-300 hover:from-[#9888d6] hover:to-[#8078c8] hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
                 disabled={isSubmitting}
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 }
-                }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
               >
                 {isSubmitting ? 'Signing Up...' : 'Sign Up'}
-              </motion.button>
-            </motion.form>
+              </button>
+            </form>
 
             {/* Login Link */}
             <p className="text-center mt-6 text-sm text-black">
@@ -264,24 +259,28 @@ const SignUp: React.FC = () => {
                 Log in
               </Link>
             </p>
-          </motion.div>
+          </div>
 
           {/* Right Side - Image */}
+<<<<<<< HEAD
           <motion.div 
             className="flex items-center justify-center"
             initial={{ x: 100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
+=======
+          <div className="hidden lg:flex items-center justify-center">
+>>>>>>> parent of e453773 (add animation in switching login and signup pages and change login page image)
             <img
               src="/assets/Images/5184127ebcbd53fe761cd4962df4875947ccd85f.png"
               alt="Golden Retriever Puppy"
               className="w-full max-w-xs sm:max-w-md lg:max-w-lg h-auto object-contain"
             />
-          </motion.div>
+          </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
