@@ -136,7 +136,7 @@ const SignUp: React.FC = () => {
 
             <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
               {/* Name Field */}
-<<<<<<< HEAD
+
               <motion.div
                 variants={{
                   hidden: { opacity: 0, y: 20 },
@@ -154,7 +154,7 @@ const SignUp: React.FC = () => {
                   autoComplete="name"
                 />
               </motion.div>
-=======
+
               <FormInput
                 label="Name"
                 type="text"
@@ -164,7 +164,7 @@ const SignUp: React.FC = () => {
                 error={errors.name}
                 autoComplete="name"
               />
->>>>>>> parent of e453773 (add animation in switching login and signup pages and change login page image)
+
 
               {/* Email Field */}
               <FormInput
@@ -179,7 +179,7 @@ const SignUp: React.FC = () => {
               />
 
               {/* Password Field */}
-<<<<<<< HEAD
+
               <motion.div
                 variants={{
                   hidden: { opacity: 0, y: 20 },
@@ -216,7 +216,7 @@ const SignUp: React.FC = () => {
                   autoComplete="new-password"
                 />
               </motion.div>
-=======
+
               <FormInput
                 label="Password"
                 type="password"
@@ -237,7 +237,7 @@ const SignUp: React.FC = () => {
                 error={errors.confirm}
                 autoComplete="new-password"
               />
->>>>>>> parent of e453773 (add animation in switching login and signup pages and change login page image)
+
 
               {/* Submit Button */}
               <button
@@ -262,16 +262,16 @@ const SignUp: React.FC = () => {
           </div>
 
           {/* Right Side - Image */}
-<<<<<<< HEAD
+
           <motion.div 
             className="flex items-center justify-center"
             initial={{ x: 100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-=======
+
           <div className="hidden lg:flex items-center justify-center">
->>>>>>> parent of e453773 (add animation in switching login and signup pages and change login page image)
+
             <img
               src="/assets/Images/5184127ebcbd53fe761cd4962df4875947ccd85f.png"
               alt="Golden Retriever Puppy"
