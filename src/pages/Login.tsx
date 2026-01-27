@@ -109,16 +109,16 @@ const Login: React.FC = () => {
       <div className="flex-1 flex items-center justify-center px-4 py-8 relative z-10">
         <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Side - Image */}
-<<<<<<< HEAD
+
           <motion.div 
             className="flex items-center justify-center order-2 lg:order-1"
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-=======
+
           <div className="hidden lg:flex items-center justify-center">
->>>>>>> parent of e453773 (add animation in switching login and signup pages and change login page image)
+
             <img
               src="/assets/Images/1220ca60f061c741e0d04b9305745bf48e653e8d.png"
               alt="Cat with blue eyes"
@@ -127,23 +127,23 @@ const Login: React.FC = () => {
           </div>
 
           {/* Right Side - Form */}
-<<<<<<< HEAD
+
           <motion.div 
             className="bg-[#f5f3f0] rounded-2xl p-8 shadow-sm w-full max-w-md mx-auto lg:mx-0 order-1 lg:order-2"
             initial={{ x: 100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-=======
+
           <div className="bg-[#f5f3f0] rounded-2xl p-8 shadow-sm w-full max-w-md mx-auto lg:mx-0">
->>>>>>> parent of e453773 (add animation in switching login and signup pages and change login page image)
+
             <h1 className="text-4xl font-bold text-black mb-8 text-center">
               Welcome Back
             </h1>
 
             <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
               {/* Email Field */}
-<<<<<<< HEAD
+
               <motion.div
                 variants={{
                   hidden: { opacity: 0, y: 20 },
@@ -180,7 +180,7 @@ const Login: React.FC = () => {
                   autoComplete="current-password"
                 />
               </motion.div>
-=======
+
               <FormInput
                 label="Email"
                 type="email"
@@ -201,7 +201,7 @@ const Login: React.FC = () => {
                 error={errors.password}
                 autoComplete="current-password"
               />
->>>>>>> parent of e453773 (add animation in switching login and signup pages and change login page image)
+
 
               {/* Forgot Password */}
               <div className="text-right">
