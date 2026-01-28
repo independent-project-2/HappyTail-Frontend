@@ -8,9 +8,11 @@ import { LogIn } from 'lucide-react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const isAuthenticated = true; // Replace with actual authentication logic
 
   const router = useNavigate();
+
+  
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-transparent backdrop-blur-sm">
