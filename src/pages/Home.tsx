@@ -2,9 +2,9 @@
 
 import { PawPrint } from "lucide-react"
 import { useEffect, useState } from "react"
-import CAT from "/assets/Images/cat.jpg"
-import BDOG from "/assets/Images/golden-retriever.jpg"
-import HUSKY from "/assets/Images/husky.jpg"
+import CAT from "/assets/Images/cat.png"
+import BDOG from "/assets/Images/golden-retriever.png"
+import HUSKY from "/assets/Images/husky.png"
 
 const heroSlides = [
   {
