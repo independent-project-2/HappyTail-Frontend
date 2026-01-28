@@ -7,6 +7,8 @@ import Chatbot from './pages/chatbot';
 import Blog from './pages/blog';
 import BrowsePets from './pages/BrowsePets';
 import Home from './pages/Home';
+import AboutPage from './pages/AboutPage';
+import Profile from './pages/ProfilePage';
 
 
 import './App.css';
@@ -31,7 +33,8 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/browse-pets" element={<BrowsePets />} />
         <Route path="/blog" element={<Blog />} />
-        <Route path="/about" element={<Navigate to="/" replace />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </>
   );
