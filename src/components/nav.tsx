@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const router = useNavigate();
 
   return (
@@ -39,7 +39,7 @@ export default function Navbar() {
             </a>
           </div>
 
-          
+
           <div className="hidden md:flex items-center space-x-4">
             <button onClick={() => router('/ask-me')} className="bg-[#9A93FF] text-white px-4 py-2 rounded-full hover:bg-[#827afe] font-medium cursor-pointer">
               Ask me

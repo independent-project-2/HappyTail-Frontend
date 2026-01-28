@@ -10,7 +10,7 @@ export default function Loading() {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigate("/login");
-    }, 3000); 
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [navigate]);

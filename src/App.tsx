@@ -1,4 +1,5 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import Loading from './pages/loading';
@@ -12,6 +13,8 @@ import Home from './pages/Home';
 import './App.css';
 
 function App() {
+  const location = useLocation();
+
   return (
     <>
       <Navbar />
