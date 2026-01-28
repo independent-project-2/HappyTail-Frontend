@@ -1,5 +1,6 @@
 import { useState  } from "react";
 import { useNavigate } from "react-router-dom";
+import { LogIn } from 'lucide-react';
 
 
 
@@ -7,8 +8,11 @@ import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const isAuthenticated = true; // Replace with actual authentication logic
 
   const router = useNavigate();
+
+  
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-transparent backdrop-blur-sm">
@@ -39,18 +43,27 @@ export default function Navbar() {
             </a>
           </div>
 
+        
 
           <div className="hidden md:flex items-center space-x-4">
             <button onClick={() => router('/ask-me')} className="bg-[#9A93FF] text-white px-4 py-2 rounded-full hover:bg-[#827afe] font-medium cursor-pointer">
               Ask me
             </button>
-            {/* Buttons <button onClick={() => router('/login')} className="text-[#9A93FF] border-2 border-[#9A93FF] px-4 py-2 rounded-full hover:bg-[#9A93FF] hover:text-white font-medium transition-all">
-              Login
-            </button>
-            <button onClick={() => router('/signup')} className="bg-[#9A93FF] text-white px-4 py-2 rounded-full hover:bg-[#827afe] font-medium">
-              Sign Up
-            </button>*/}
+             {/* profile */}
+            
+
+              {isAuthenticated ? (
+           <div onClick={() => router('/profile')} className="flex items-center justify-center w-10 h-10 rounded-full overflow-hidden border-2 border-black">
+  <img 
+    src="/assets/profilePhoto/profile.png" 
+    alt="Profile" 
+    className="w-full h-full object-cover"
+  />
+</div> ): (  <div><LogIn className="w-6 h-6 text-black" /></div>
+        )}
+         
           </div>
+          
 
 
           <div className="flex items-center md:hidden">
