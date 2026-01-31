@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import FormInput from '../components/FormInput';
-import '../styles/LoginPage.css';
 
 /**
  * Login Page Component
@@ -123,7 +122,7 @@ const Login: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <img
-              src="/assets/Images/log cat.png"
+              src ="/assets/Images/log cat.png"
               alt="Cat with blue eyes"
               className="w-full max-w-2xl h-auto object-contain"
             />
@@ -169,7 +168,6 @@ const Login: React.FC = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="Enter your email address"
                   error={errors.email}
                   autoComplete="email"
                 />
@@ -188,7 +186,6 @@ const Login: React.FC = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="Enter your password"
                   error={errors.password}
                   autoComplete="current-password"
                 />
