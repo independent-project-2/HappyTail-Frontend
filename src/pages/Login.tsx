@@ -168,6 +168,7 @@ const Login: React.FC = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
+                  placeholder="Enter your email address"
                   error={errors.email}
                   autoComplete="email"
                 />
@@ -186,6 +187,7 @@ const Login: React.FC = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
+                  placeholder="Enter your password"
                   error={errors.password}
                   autoComplete="current-password"
                 />
