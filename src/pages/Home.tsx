@@ -2,6 +2,7 @@
 
 import { PawPrint } from "lucide-react"
 import { useEffect, useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import CAT from "/assets/Images/cat.png"
 import BDOG from "/assets/Images/golden-retriever.png"
 import HUSKY from "/assets/Images/husky.png"
@@ -19,7 +20,7 @@ const heroSlides = [
   {
     image: CAT,
     imageAlt: "Adorable Cat",
-    bgColor: "from-purple-50 via-pink-50 to-purple-100",
+    bgColor: "from-purple-50 via-pink-50 to-purple-200",
     textColor: "text-gray-900",
     accentColor: "text-orange-500",
     buttonBg: "bg-orange-500 hover:bg-orange-700",
@@ -28,7 +29,7 @@ const heroSlides = [
   {
     image: BDOG,
     imageAlt: "Happy Golden Retriever",
-    bgColor: "from-orange-100 via-amber-50 to-orange-300",
+    bgColor: "from-orange-50 via-amber-50 to-orange-200",
     textColor: "text-gray-900",
     accentColor: "text-amber-800",
     buttonBg: "bg-amber-800 hover:bg-amber-900",
@@ -38,7 +39,7 @@ const heroSlides = [
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0)
-
+  
   // Disable page scroll while hero section is actioned
   useEffect(() => {
     document.body.style.overflow = "hidden"
@@ -107,10 +108,24 @@ export default function Home() {
 
   const slide = heroSlides[currentSlide]
 
+   const [mounted, setMounted] = useState(false)
+
+  //  initial page load
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   return (
-    <div
-      className={`h-screen w-screen flex flex-col lg:flex-row items-center justify-center bg-linear-to-b ${slide.bgColor} transition-all duration-700 `}
-    >
+  <AnimatePresence>
+  {mounted && (
+  <motion.div
+    key={currentSlide} // triggers animation on slide change
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    transition={{ duration: 0.8 }}
+    className={`h-screen w-screen absolute inset-0 flex flex-col lg:flex-row items-center justify-center bg-linear-to-b ${slide.bgColor}`}
+  >
       {/* LEFT — Text Content */}
       <div className="mt-30 lg:mt-0 flex-1 w-full max-w-2xl px-4 sm:px-6 lg:px-8 flex flex-col justify-center space-y-0.5 lg:space-y-8 min-h-[50vh] lg:min-h-full">
         <h1
@@ -167,6 +182,8 @@ export default function Home() {
           />
         </div>
       </div>
-    </div>
+    </motion.div>
+  )}
+    </AnimatePresence>
   )
 }
