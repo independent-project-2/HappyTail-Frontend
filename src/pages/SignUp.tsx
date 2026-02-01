@@ -109,7 +109,7 @@ const SignUp: React.FC = () => {
 
     try {
       // Call the backend API
-      const response = await register({
+      await register({
         name: formData.name,
         email: formData.email,
         password: formData.password,

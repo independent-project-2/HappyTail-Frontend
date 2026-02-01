@@ -89,7 +89,7 @@ const Login: React.FC = () => {
 
     try {
       // Call the backend API
-      const response = await login({
+      await login({
         email: formData.email,
         password: formData.password,
       });
