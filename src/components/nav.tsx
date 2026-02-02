@@ -1,6 +1,7 @@
-import { useState  } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { LogIn } from 'lucide-react';
+import { User, LogOut } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 
 
@@ -8,9 +9,29 @@ import { LogIn } from 'lucide-react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const isAuthenticated = true; // Replace with actual authentication logic
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const { isAuthenticated, user, logout } = useAuth();
+  const profileRef = useRef<HTMLDivElement>(null);
 
   const router = useNavigate();
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setIsProfileOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleLogout = async () => {
+    await logout();
+    setIsProfileOpen(false);
+    router('/login');
+  };
 
   
 
@@ -49,24 +70,111 @@ export default function Navbar() {
             <button onClick={() => router('/ask-me')} className="bg-[#9A93FF] text-white px-4 py-2 rounded-full hover:bg-[#827afe] font-medium cursor-pointer">
               Ask me
             </button>
-             {/* profile */}
             
+            {/* Profile Dropdown */}
+            {isAuthenticated ? (
+              <div className="relative" ref={profileRef}>
+                <button
+                  onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  className="flex items-center justify-center w-10 h-10 rounded-full overflow-hidden border-2 border-black hover:border-[#9A93FF] transition-colors focus:outline-none"
+                >
+                  <img 
+                    src="/assets/profilePhoto/profile.png" 
+                    alt="Profile" 
+                    className="w-full h-full object-cover"
+                  />
+                </button>
 
-              {isAuthenticated ? (
-           <div onClick={() => router('/profile')} className="flex items-center justify-center w-10 h-10 rounded-full overflow-hidden border-2 border-black">
-  <img 
-    src="/assets/profilePhoto/profile.png" 
-    alt="Profile" 
-    className="w-full h-full object-cover"
-  />
-</div> ): (  <div><LogIn className="w-6 h-6 text-black" /></div>
-        )}
-         
+                {/* Dropdown Menu */}
+                {isProfileOpen && (
+                  <div className="absolute -right-20 mt-2 w-56 bg-[#E8F0F8] rounded-2xl shadow-xl py-2 z-50 border border-gray-200 animate-fadeIn">
+                    {/* User Info */}
+                    <div className="px-4 py-3 border-b border-gray-200 bg-gradient-to-r from-[#9A93FF]/10 to-transparent">
+                      <p className="text-sm font-semibold text-gray-900 truncate">{user?.name || 'User'}</p>
+                      <p className="text-xs text-gray-500 truncate">{user?.email || ''}</p>
+                    </div>
+
+                    {/* Profile & Logout */}
+                    <div className="py-1">
+                      <button
+                        onClick={() => {
+                          router('/profile');
+                          setIsProfileOpen(false);
+                        }}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
+                      >
+                        <User className="w-4 h-4 text-[#9A93FF]" />
+                        <span className="font-medium">My Profile</span>
+                      </button>
+
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-3 transition-colors"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        <span className="font-medium">Logout</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : null}
           </div>
           
 
 
-          <div className="flex items-center md:hidden">
+          <div className="flex items-center md:hidden space-x-2">
+            {/* Profile Icon for Mobile */}
+            {isAuthenticated && (
+              <div className="relative" ref={profileRef}>
+                <button
+                  onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  className="flex items-center justify-center w-9 h-9 rounded-full overflow-hidden border-2 border-black hover:border-[#9A93FF] transition-colors focus:outline-none"
+                >
+                  <img 
+                    src="/assets/profilePhoto/profile.png" 
+                    alt="Profile" 
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+
+                {/* Mobile Dropdown Menu */}
+                {isProfileOpen && (
+                  <div className="absolute right-0 mt-2 w-56 bg-[#E8F0F8] rounded-2xl shadow-xl py-2 z-50 border border-gray-200 animate-fadeIn">
+                    {/* User Info */}
+                    <div className="px-4 py-3 border-b border-gray-200 bg-gradient-to-r from-[#9A93FF]/10 to-transparent">
+                      <p className="text-sm font-semibold text-gray-900 truncate">{user?.name || 'User'}</p>
+                      <p className="text-xs text-gray-500 truncate">{user?.email || ''}</p>
+                    </div>
+
+                    {/* Profile & Logout */}
+                    <div className="py-1">
+                      <button
+                        onClick={() => {
+                          router('/profile');
+                          setIsProfileOpen(false);
+                          setIsOpen(false);
+                        }}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
+                      >
+                        <User className="w-4 h-4 text-[#9A93FF]" />
+                        <span className="font-medium">My Profile</span>
+                      </button>
+
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-3 transition-colors"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        <span className="font-medium">Logout</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+            
+            {/* Hamburger Menu */}
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-black font-medium focus:outline-none"
@@ -94,27 +202,32 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden bg-white bg-opacity-70 backdrop-blur-sm">
-          <a href="/home" className="block px-4 py-2 text-black hover:text-[#9A93FF] font-medium">
+          <a onClick={()=>{router('/home'); setIsOpen(false);}} className="block px-4 py-2 text-black hover:text-[#9A93FF] font-medium cursor-pointer">
             Home
           </a>
-          <a href="/browse-pets" className="block px-4 py-2 text-black hover:text-[#9A93FF] font-medium">
+          <a onClick={()=>{router('/browse-pets'); setIsOpen(false);}} className="block px-4 py-2 text-black hover:text-[#9A93FF] font-medium cursor-pointer">
             Browse Pets
           </a>
-          <a href="/blog" className="block px-4 py-2 text-black hover:text-[#9A93FF] font-medium">
+          <a onClick={()=>{router('/blog'); setIsOpen(false);}} className="block px-4 py-2 text-black hover:text-[#9A93FF] font-medium cursor-pointer">
             Blog
           </a>
-          <a href="/about" className="block px-4 py-2 text-black hover:text-[#9A93FF] font-medium">
+          <a onClick={()=>{router('/about'); setIsOpen(false);}} className="block px-4 py-2 text-black hover:text-[#9A93FF] font-medium cursor-pointer">
             About
           </a>
-          <button onClick={() => router('/ask-me')} className="block w-full text-left px-4 py-2 text-black hover:text-[#9A93FF] font-medium">
+          <button onClick={() => {router('/ask-me'); setIsOpen(false);}} className="block w-full text-left px-4 py-2 text-black hover:text-[#9A93FF] font-medium">
             Ask me
           </button>
-          <button onClick={() => router('/login')} className="block w-full text-left px-4 py-2 text-black hover:text-[#9A93FF] font-medium">
-            Login
-          </button>
-          <button onClick={() => router('/signup')} className="block w-full text-left px-4 py-2 text-black hover:text-[#9A93FF] font-medium">
-            Sign Up
-          </button>
+          
+          {!isAuthenticated && (
+            <>
+              <button onClick={() => {router('/login'); setIsOpen(false);}} className="block w-full text-left px-4 py-2 text-black hover:text-[#9A93FF] font-medium">
+                Login
+              </button>
+              <button onClick={() => {router('/signup'); setIsOpen(false);}} className="block w-full text-left px-4 py-2 text-black hover:text-[#9A93FF] font-medium">
+                Sign Up
+              </button>
+            </>
+          )}
         </div>
       )}
     </nav>
