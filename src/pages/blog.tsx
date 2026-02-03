@@ -15,54 +15,67 @@ interface BlogPost {
 
 const BLOG_POSTS: BlogPost[] = [
   {
-    id: 1,
-    title: "Understanding Pet Body Language",
-    description: "Your pet communicates in ways beyond barks and meows. Learn how to read their subtle signs of happiness, stress, and affection.",
-    content: "Understanding your pet's body language is essential for building a strong bond and ensuring their well-being. Dogs and cats have unique ways of expressing their emotions through ear positions, tail movements, and facial expressions.\n\nFor example, a wagging tail doesn't always mean a happy dog; sometimes it can indicate agitation. Similarly, a cat's slow blink is a sign of deep trust and love. By paying close attention to these non-verbal cues, you can better respond to your pet's needs and create a more harmonious home environment.",
-    image: "/assets/Images/piclogo.png",
-    category: "Pet Care",
-    readTime: "5 min read",
-    date: "Oct 24, 2024",
+    id: 5,
+    title: "The Most Popular Dog Breeds of 2024",
+    description: "Discover which dog breeds are capturing hearts this year. From the loyal Labrador to the energetic Border Collie, explore the top choices for families.",
+    content: "Choosing the right dog breed is a major decision for any potential pet owner. This year's data from the Dog Aging Project reveals fascinating insights into our most beloved companions.\n\nLabrador Retrievers and Golden Retrievers continue to lead the pack due to their friendly nature and adaptability. However, we're seeing a rise in popularity for intelligent working breeds like the Australian Shepherd and the Border Collie. For those living in smaller spaces, the Pembroke Welsh Corgi and French Bulldog remain top contenders. Each breed brings its own unique personality and care requirements, so it's essential to research which one aligns best with your lifestyle.",
+    image: "/assets/Images/blog-breeds.png",
+    category: "Breeds",
+    readTime: "7 min read",
+    date: "Feb 04, 2024",
     author: "Dr. Sarah Wilson"
   },
   {
-    id: 2,
-    title: "Healthy Nutrition for Active Pets",
-    description: "A balanced diet is the cornerstone of pet health. Discover the essential nutrients your furry friend needs for a long, vibrant life.",
-    content: "Nutrition plays a critical role in your pet's energy levels and overall longevity. High-quality proteins, healthy fats, and essential vitamins are must-haves for any active companion. \n\nAvoid filler ingredients and pay attention to specific dietary needs based on age and activity level. Consult with your veterinarian to create a personalized meal plan that supports healthy joints, a shiny coat, and a strong immune system. Remember, what you put in their bowl today determines their health tomorrow.",
-    image: "/assets/Images/piclogo.png",
+    id: 6,
+    title: "A Guide to Balanced Pet Nutrition",
+    description: "What goes into your pet's bowl matters. Learn how to choose the best food for your dog's age, weight, and activity level.",
+    content: "Proper nutrition is the foundation of a long and healthy life for your pet. Just like humans, dogs require a balanced diet of proteins, fats, carbohydrates, vitamins, and minerals.\n\nWhen selecting a pet food, look for high-quality animal proteins as the first ingredient. Avoid 'fillers' like excessive corn or soy which provide less nutritional value. It's also important to adjust portions based on your dog's activity level and life stage—a puppy's needs are very different from those of a senior dog. Feeding the right amount not only keeps your pet at a healthy weight but also supports their immune system, joint health, and coat quality.",
+    image: "/assets/Images/blog-nutrition.jpg",
     category: "Nutrition",
-    readTime: "8 min read",
-    date: "Oct 21, 2024",
+    readTime: "6 min read",
+    date: "Feb 03, 2024",
     author: "Mark Thompson"
   },
   {
-    id: 3,
-    title: "The Joy of Senior Pet Adoption",
-    description: "Older pets have so much love to give. Explore why adopting a senior animal might be the most rewarding decision you ever make.",
-    content: "Adopting a senior pet is one of the most selfless and rewarding acts a pet lover can do. Older animals are often already trained, have calmer temperaments, and are deeply grateful for a second chance at happiness.\n\nWhile they may require more health checkups, the bond formed with a senior pet is incredibly deep. They provide a quiet, steady companionship that is perfect for many households. Give a senior pet their 'golden years' in a loving home, and they will repay you with unconditional devotion.",
-    image: "/assets/Images/piclogo.png",
-    category: "Adoption",
-    readTime: "6 min read",
-    date: "Oct 18, 2024",
-    author: "Emma Rodriguez"
-  },
-  {
-    id: 4,
-    title: "Training Tips for New Puppy Owners",
-    description: "Bringing home a puppy is exciting but challenging. Get started on the right paw with these essential training foundations.",
-    content: "The first few months with a new puppy are crucial for setting lifelong habits. Start with positive reinforcement techniques, patience, and consistency. \n\nFocus on socialization, basic commands like 'sit' and 'stay', and crate training. Keep training sessions short and fun to maintain their curiosity. Building a foundation of trust early on will ensure your puppy grows into a well-behaved and confident adult dog. Don't forget that mistakes are part of the learning process for both of you!",
-    image: "/assets/Images/piclogo.png",
+    id: 7,
+    title: "The Importance of Interactive Play",
+    description: "Playtime isn't just for fun—it's vital for your pet's mental and physical development. See why interactive toys are a must-have.",
+    content: "Play is a natural behavior for dogs and serves as a crucial way for them to learn and stay fit. Interactive toys, like puzzle balls and chew rings, provide mental stimulation that prevents boredom and destructive behaviors.\n\nEngaging in play with your puppy strengthens the bond between you and helps them develop coordination and social skills. Whether it's a game of fetch in the yard or a quiet session with a squeaky toy indoors, regular playtime ensures your furry friend stays happy and sharp. Remember, a tired dog is a well-behaved dog!",
+    image: "/assets/Images/blog-playtime.jpg",
     category: "Training",
-    readTime: "10 min read",
-    date: "Oct 15, 2024",
-    author: "David Chen"
+    readTime: "5 min read",
+    date: "Feb 02, 2024",
+    author: "Emma Rodriguez"
   }
 ];
 
 export default function Blog() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+  const [posts, setPosts] = useState<BlogPost[]>(BLOG_POSTS);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        console.log("Attempting to fetch blogs from backend...");
+        const response = await fetch('http://localhost:5000/api/blogs');
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const data = await response.json();
+        console.log("Successfully fetched blogs:", data);
+        // If we got data, merge it with existing BLOG_POSTS, avoiding duplicates by ID
+        setPosts(prev => {
+          const combined = [...prev, ...data];
+          const unique = combined.filter((post, index, self) =>
+            index === self.findIndex((p) => p.id === post.id)
+          );
+          return unique;
+        });
+      } catch (err) {
+        console.log("Backend not available, using default data.", err);
+      }
+    };
+    fetchBlogs();
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -77,7 +90,7 @@ export default function Blog() {
     revealElements.forEach(el => observer.observe(el));
 
     return () => observer.disconnect();
-  }, []);
+  }, [posts, searchQuery]);
 
   // Lock scroll when modal is open
   useEffect(() => {
@@ -91,7 +104,7 @@ export default function Blog() {
     };
   }, [selectedPost]);
 
-  const filteredPosts = BLOG_POSTS.filter(post =>
+  const filteredPosts = posts.filter(post =>
     post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     post.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
     post.category.toLowerCase().includes(searchQuery.toLowerCase())
@@ -105,7 +118,7 @@ export default function Blog() {
       <div className="max-w-7xl mx-auto px-6 relative">
 
         {/* Header Section - Matching the Home Page Design Language */}
-        <div className="flex flex-col md:flex-row items-center justify-between mb-20 reveal">
+        <div className="flex flex-col md:flex-row items-center justify-between mb-20">
           <div className="md:w-3/5 text-left">
             <h1 className="text-5xl md:text-7xl font-bold text-[#1A1A2E] leading-tight mb-6 tracking-tight">
               Explore Our <span className="text-[#FF6B00]">Pet</span> <br />
@@ -129,7 +142,7 @@ export default function Blog() {
         </div>
 
         {/* Search Bar Section - Simplified UI */}
-        <div className="flex justify-center mb-16 reveal">
+        <div className="flex justify-center mb-16">
           <div className="relative w-full max-w-xl group">
             <div className="relative flex items-center bg-white rounded-full border border-slate-200 px-6 py-4 shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.06)] transition-all">
               <Search className="text-[#9A93FF] w-5 h-5 mr-3" />
@@ -151,7 +164,7 @@ export default function Blog() {
               {filteredPosts.map((post) => (
                 <div
                   key={post.id}
-                  className="reveal group bg-white rounded-[2rem] border border-slate-100 shadow-[0_10px_40px_rgba(0,0,0,0.04)] hover:shadow-[0_25px_60px_rgba(154,147,255,0.1)] transition-all duration-500 overflow-hidden flex flex-col h-full"
+                  className="bg-white rounded-[2rem] border border-slate-100 shadow-[0_10px_40px_rgba(0,0,0,0.04)] hover:shadow-[0_25px_60px_rgba(154,147,255,0.1)] transition-all duration-500 overflow-hidden flex flex-col h-full"
                 >
                   <div className="relative aspect-[16/10] overflow-hidden">
                     <img
@@ -186,7 +199,7 @@ export default function Blog() {
               ))}
             </div>
           ) : (
-            <div className="reveal bg-white rounded-[3rem] w-full py-24 flex flex-col items-center justify-center text-center">
+            <div className="bg-white rounded-[3rem] w-full py-24 flex flex-col items-center justify-center text-center">
               <h3 className="text-xl font-bold text-slate-900 mb-2">No matching posts found</h3>
               <p className="text-slate-400 font-medium px-4">Try searching for something else!</p>
             </div>
