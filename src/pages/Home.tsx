@@ -144,7 +144,7 @@ export default function Home() {
         </p>
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-3">
           <button
-            
+            onClick={()=>{router('/browse-pets')}}
             className={`flex items-center justify-center gap-2 rounded-lg px-6 py-2 sm:px-8 text-sm sm:text-base font-semibold shadow-lg transition-all hover:scale-105 ${slide.buttonBg} text-white`}
           >
             <PawPrint className="h-4 w-4 sm:h-5 sm:w-5" />
