@@ -9,10 +9,11 @@ import BrowsePets from './pages/BrowsePets';
 import Home from './pages/Home';
 import AboutPage from './pages/AboutPage';
 import Profile from './pages/ProfilePage';
+import AddPets from './pages/AddPets';
 import ProtectedRoute from './components/ProtectedRoute';
 
-
 import './App.css';
+
 
 function App() {
 
@@ -71,6 +72,7 @@ function App() {
         
         {/* Chatbot Route */}
         <Route path="/ask-me" element={<Chatbot />} />
+
       </Routes>
     </>
   );
