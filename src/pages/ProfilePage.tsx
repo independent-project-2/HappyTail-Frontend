@@ -32,7 +32,6 @@ const initialBlogs: Blog[] = [
     { id: 1, title: 'Pet Care Tips', text: 'How to take care of your golden retriever...', image: '/assets/Images/piclogo.png', date: 'Jan 27, 2026' }
 ];
 
-// --- Sub-components for better code practices ---
 
 
 const PetCard = ({ pet, onDelete, deletingId }: { pet: Pet, onDelete: (id: number) => void, deletingId: number | null }) => (
@@ -112,7 +111,7 @@ export default function ProfilePage() {
     const handleBlogImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            // Create a preview URL for the local session
+
             const previewUrl = URL.createObjectURL(file);
             setNewBlog(prev => ({ ...prev, image: previewUrl }));
         }
@@ -154,10 +153,10 @@ export default function ProfilePage() {
     return (
         <div className="min-h-screen bg-[#FAFAFC] pt-24 pb-12 md:pt-32 md:pb-20">
             <div className="max-w-7xl mx-auto px-4 md:px-6">
-                {/* 3-column layout for complete visibility */}
+
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 items-stretch">
 
-                    {/* Column 1: User Card */}
+
                     <div className="space-y-6 md:space-y-8">
                         <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 shadow-sm border border-slate-100 overflow-hidden relative h-full">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-purple-50 rounded-full blur-3xl opacity-50" />
@@ -201,7 +200,7 @@ export default function ProfilePage() {
                         </div>
                     </div>
 
-                    {/* Column 2: Listings Section */}
+
                     <div className="space-y-6 md:space-y-8 h-full">
                         <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 shadow-sm border border-slate-100 flex flex-col h-full">
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 md:mb-8">
@@ -213,7 +212,7 @@ export default function ProfilePage() {
                                         {['All', 'Available', 'Adopted'].map((f) => (
                                             <button
                                                 key={f}
-                                                onClick={() => setPetFilter(f as any)}
+                                                onClick={() => setPetFilter(f as 'All' | 'Available' | 'Adopted')}
                                                 className={`px-3 py-1 rounded-full text-[10px] font-bold border transition-all ${petFilter === f ? 'bg-[#9A93FF] border-[#9A93FF] text-white shadow-sm' : 'bg-white border-slate-100 text-slate-400 hover:border-purple-200'}`}
                                             >
                                                 {f}
@@ -245,7 +244,7 @@ export default function ProfilePage() {
                         </div>
                     </div>
 
-                    {/* Column 3: Your Blogs Section */}
+
                     <div className="space-y-6 md:space-y-8 h-full">
                         <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 shadow-sm border border-slate-100 flex flex-col h-full">
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 md:mb-8">
@@ -282,7 +281,7 @@ export default function ProfilePage() {
                 </div>
             </div>
 
-            {/* Create Blog Modal */}
+
             {showBlogModal && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6 bg-slate-900/40 backdrop-blur-md animate-fade-in">
                     <div className="bg-white w-full max-w-xl rounded-[2rem] md:rounded-[3rem] p-6 md:p-10 relative shadow-2xl animate-pop-in max-h-[90vh] overflow-y-auto">
