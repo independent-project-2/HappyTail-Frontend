@@ -32,9 +32,7 @@ function App() {
         <Route 
           path="/home" 
           element={
-            <ProtectedRoute>
               <Home />
-            </ProtectedRoute>
           } 
         />
         <Route 
@@ -69,10 +67,17 @@ function App() {
             </ProtectedRoute>
           } 
         />
+        <Route 
+          path="/add-pets" 
+          element={
+            <ProtectedRoute>
+              <AddPets />
+            </ProtectedRoute>
+          } 
+        />
         
         {/* Chatbot Route */}
         <Route path="/ask-me" element={<Chatbot />} />
-
       </Routes>
     </>
   );

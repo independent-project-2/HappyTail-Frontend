@@ -144,18 +144,21 @@ export default function Home() {
         </p>
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-3">
           <button
-            onClick={() => router('/browse-pets')}
+            
             className={`flex items-center justify-center gap-2 rounded-lg px-6 py-2 sm:px-8 text-sm sm:text-base font-semibold shadow-lg transition-all hover:scale-105 ${slide.buttonBg} text-white`}
           >
             <PawPrint className="h-4 w-4 sm:h-5 sm:w-5" />
             Adopt Now
           </button>
-          <button
+            <button
+            onClick={() => {
+              router('/add-pets')
+            }}
             className={`flex items-center justify-center gap-2 rounded-lg px-6 py-2 sm:px-8 text-sm sm:text-base font-semibold border-2 transition-all hover:scale-105 ${slide.buttonOutline}`}
-          >
+            >
             <PawPrint className="h-4 w-4 sm:h-5 sm:w-5" />
             Add Animal
-          </button>
+            </button>
         </div>
       </div>
 
@@ -163,7 +166,7 @@ export default function Home() {
       <div className="flex-1 w-full flex justify-center lg:justify-end mt-0 lg:mt-0 px-4 sm:px-6 pt-5">
         <div
           className="
-            w-full max-w-[500px] sm:max-w-[700px] md:max-w-[800px] lg:max-w-[520px] 
+            w-full max-w-125 sm:max-w-[700px] md:max-w-[800px] lg:max-w-[520px] 
             h-[35vh] sm:h-[40vh] md:h-[50vh] lg:h-auto 
             aspect-[4/5] sm:aspect-[3/4] md:aspect-[4/5]
             flex justify-center items-center
