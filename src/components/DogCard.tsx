@@ -23,7 +23,8 @@ export default function DogCard(
 
     return (
         <>
-            <div className="relative shadow-xl rounded-xl text-black flex flex-col overflow-hidden">
+            <div className="relative shadow-xl rounded-xl text-black flex flex-col overflow-hidden 
+                           transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
                 <img
                     src={props.imageUrl}
                     alt="Dog Image"
@@ -40,7 +41,7 @@ export default function DogCard(
                     
                     <button 
                     onClick={handleViewPets}
-                    className="absolute right-0 bottom-0 text-purple-700 border-2 border-purple-700 border-solid rounded-xl p-2 m-2 hover:bg-purple-700 hover:text-white transition-colors">
+                    className="rounded-xl absolute right-0 bottom-0 text-purple-700 border-2 border-purple-700 border-solid rounded-xl p-2 m-2 hover:bg-purple-700 hover:text-white transition-colors">
                         View More
                     </button>
                 </div>

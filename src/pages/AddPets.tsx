@@ -345,8 +345,10 @@ function AddPets() {
                 </form>
 
             </div>
+
+  
         </div>
-    )
+    );
 }
 
 export default AddPets
