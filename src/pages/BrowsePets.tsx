@@ -14,7 +14,7 @@ export default function BrowsePets() {
         <>
             <div className="min-h-screen bg-white overflow-auto">
                 <form onSubmit={() => { }} 
-                className="flex flex-col md:flex-row p-4 md:p-10 gap-4 md:gap-10 justify-center mt-16 md:mt-20">
+                className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-6 flex flex-col md:flex-row gap-4 md:gap-10 justify-center mt-16 md:mt-20">
                     {/* Location Container */}
                     <div className="relative w-full md:w-72">
 
@@ -28,7 +28,7 @@ export default function BrowsePets() {
                         {/* The Select Box */}
                         <div className="relative flex items-center">
                             <select
-                                className="w-full rounded-xl border-2 border-gray-300 bg-transparent py-4 pl-4 pr-10 text-2xl font-normal text-black outline-none transition-colors focus:border-blue-500 appearance-none cursor-pointer"
+                                className="w-full rounded-xl border-2 border-gray-300 bg-white/90 py-3 pl-10 pr-4 text-lg text-black focus:border-purple-500 outline-none appearance-none cursor-pointer"
                             >
                                 <option value="Srilanka">Srilanka</option>
                                 <option value="India">India</option>
@@ -61,7 +61,7 @@ export default function BrowsePets() {
                         {/* The Select Box */}
                         <div className="relative flex items-center">
                             <select
-                                className="w-full rounded-xl border-2 border-gray-300 bg-transparent py-4 pl-4 pr-10 text-2xl font-normal text-black outline-none transition-colors focus:border-blue-500 appearance-none cursor-pointer"
+                                className="w-full rounded-xl border-2 border-gray-300 bg-white/90 py-3 pl-10 pr-4 text-lg text-black focus:border-purple-500 outline-none appearance-none cursor-pointer"
                             >
                                 <option value="BullDog">Bull Dog</option>
                                 <option value="Beagle">Beagle</option>
@@ -94,7 +94,7 @@ export default function BrowsePets() {
                         {/* The Select Box */}
                         <div className="relative flex items-center">
                             <select
-                                className="w-full rounded-xl border-2 border-gray-300 bg-transparent py-4 pl-4 pr-10 text-2xl font-normal text-black outline-none transition-colors focus:border-blue-500 appearance-none cursor-pointer"
+                                className="w-full rounded-xl border-2 border-gray-300 bg-white/90 py-3 pl-10 pr-4 text-lg text-black focus:border-purple-500 outline-none appearance-none cursor-pointer"
                             >
                                 <option value="Srilanka">Free</option>
                                 <option value="India">Paid</option>
@@ -115,7 +115,7 @@ export default function BrowsePets() {
                     </div>
 
 
-                    <button className="block w-full md:w-50 bg-purple-500 border border-gray-700 text-white py-3 px-4 pr-8 rounded leading-tight focus:outline-border font-bold text-xl md:text-2xl" type="submit">Search</button>
+                    <button className="block w-full rounded-xl md:w-50 bg-purple-500 border border-gray-700 text-white py-3 px-4 pr-8 rounded leading-tight focus:outline-border font-bold text-xl md:text-2xl" type="submit">Search</button>
                 </form>
 
                 <div>

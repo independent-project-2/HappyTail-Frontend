@@ -44,7 +44,9 @@ export default function ViewPets({ onClose }: { onClose: () => void }) {
             <div className='text-gray-400'>1 year</div>
           </div>
           <div className='font-bold uppercase'>FREE</div>
-          <button className='bg-purple-500 text-white text-3xl rounded-xl p-4 mt-4 w-fit hover:bg-purple-600 absolute right-0 bottom-0'>Get</button>
+          <button className="bg-purple-500 text-white text-xl rounded-lg px-6 py-2 mt-4 hover:bg-purple-600 absolute right-4 bottom-4">
+             Get
+          </button>
         </div>
       </div>
     </div>
