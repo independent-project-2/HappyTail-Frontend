@@ -1,6 +1,6 @@
 import ImageUpload from '../components/ImageUpload';
 import { useState } from 'react';
-import { API_ENDPOINTS, getHeaders } from '../config/api';
+import { API_ENDPOINTS } from '../config/api';
 import { getCookie } from '../utils/cookies';
 
 function AddPets() {
@@ -125,7 +125,6 @@ function AddPets() {
                 return;
             }
 
-            const data = await response.json();
             alert('Pet added successfully 🐾');
 
             // Reset form after successful submission
