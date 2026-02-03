@@ -2,9 +2,11 @@
 
 import { PawPrint } from "lucide-react"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import CAT from "/assets/Images/cat.png"
 import BDOG from "/assets/Images/golden-retriever.png"
 import HUSKY from "/assets/Images/husky.png"
+
 
 const heroSlides = [
   {
@@ -38,6 +40,7 @@ const heroSlides = [
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const router = useNavigate()
 
   // Disable page scroll while hero section is actioned
   useEffect(() => {
@@ -126,6 +129,7 @@ export default function Home() {
         </p>
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-3">
           <button
+            onClick={() => router('/browse-pets')}
             className={`flex items-center justify-center gap-2 rounded-lg px-6 py-2 sm:px-8 text-sm sm:text-base font-semibold shadow-lg transition-all hover:scale-105 ${slide.buttonBg} text-white`}
           >
             <PawPrint className="h-4 w-4 sm:h-5 sm:w-5" />
