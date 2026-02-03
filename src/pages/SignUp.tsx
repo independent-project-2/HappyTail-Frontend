@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import FormInput from '../components/FormInput';
-import '../styles/SignUpPage.css';
+import { register } from '../services/authService';
+import { useAuth } from '../context/AuthContext';
 
 /**
  * SignUp Page Component
@@ -20,10 +21,12 @@ interface FormErrors {
   email?: string;
   password?: string;
   confirm?: string;
+  general?: string;
 }
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
+  const { refreshUser } = useAuth();
   
   // Form state management
   const [formData, setFormData] = useState<FormData>({
@@ -102,21 +105,29 @@ const SignUp: React.FC = () => {
     }
 
     setIsSubmitting(true);
+    setErrors({}); // Clear any previous errors
 
-    // Simulate API call
-    setTimeout(() => {
-      // Store user data in localStorage
-      localStorage.setItem(
-        'user',
-        JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-        })
-      );
+    try {
+      // Call the backend API
+      await register({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      });
 
-      setIsSubmitting(false);
+      // Refresh auth context
+      refreshUser();
+
+      // Registration successful, navigate to home
       navigate('/home');
-    }, 1000);
+    } catch (error) {
+      // Handle registration error
+      const errorMessage = error instanceof Error ? error.message : 'Registration failed. Please try again.';
+      setErrors({ general: errorMessage });
+      console.error('Registration error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -162,6 +173,17 @@ const SignUp: React.FC = () => {
                 }
               }}
             >
+              {/* General Error Message */}
+              {errors.general && (
+                <motion.div
+                  className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  {errors.general}
+                </motion.div>
+              )}
+
               {/* Name Field */}
               <motion.div
                 variants={{
@@ -213,7 +235,7 @@ const SignUp: React.FC = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="Create a strong password (min. 6 characters)"
+                  placeholder="Create a password (min. 6 characters)"
                   error={errors.password}
                   autoComplete="new-password"
                 />

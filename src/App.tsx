@@ -10,6 +10,7 @@ import Home from './pages/Home';
 import AboutPage from './pages/AboutPage';
 import Profile from './pages/ProfilePage';
 import AddPets from './pages/AddPets';
+import ProtectedRoute from './components/ProtectedRoute';
 
 import './App.css';
 
@@ -27,16 +28,51 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         
+        {/* Protected Routes */}
+        <Route 
+          path="/home" 
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/browse-pets" 
+          element={
+            <ProtectedRoute>
+              <BrowsePets />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/blog" 
+          element={
+            <ProtectedRoute>
+              <Blog />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/about" 
+          element={
+            <ProtectedRoute>
+              <AboutPage />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/profile" 
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          } 
+        />
+        
         {/* Chatbot Route */}
         <Route path="/ask-me" element={<Chatbot />} />
-        
-        {/* Redirect old routes to loading */}
-        <Route path="/home" element={<Home />} />
-        <Route path="/browse-pets" element={<BrowsePets />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/add-pets" element={<AddPets />} />
+
       </Routes>
     </>
   );

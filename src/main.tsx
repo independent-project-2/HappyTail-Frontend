@@ -9,11 +9,19 @@ import './index.css'
 // Import main App component
 import App from './App.tsx'
 
+// Import Auth Provider
+import { AuthProvider } from './context/AuthContext'
+
+// Import test utilities (for debugging)
+import './utils/testBackendConnection'
+
 // Render the React application to the DOM
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>,
 )
