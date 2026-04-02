@@ -13,12 +13,12 @@ export const API_ENDPOINTS = {
     refresh: `${BASE_URL}/api/User/refresh`,
   },
   pets: {
-    getAll: `${BASE_URL}/api/pets`,
-    getById: (id: string) => `${BASE_URL}/api/pets/${id}`,
-    create: `${BASE_URL}/api/pets`,
-    update: (id: string) => `${BASE_URL}/api/pets/${id}`,
-    delete: (id: string) => `${BASE_URL}/api/pets/${id}`,
-    filter: `${BASE_URL}/api/pets/filter`,
+    getAll: `${BASE_URL}/api/Pet/all`,
+    getById: (id: string) => `${BASE_URL}/api/Pet/${id}`,
+    create: `${BASE_URL}/api/Pet/create`,
+    update: (id: string) => `${BASE_URL}/api/Pet/update/${id}`,
+    delete: (id: string) => `${BASE_URL}/api/Pet/delete/${id}`,
+    filter: `${BASE_URL}/api/Pet/filter`,
   },
   blog: {
     getAll: `${BASE_URL}/api/blog`,

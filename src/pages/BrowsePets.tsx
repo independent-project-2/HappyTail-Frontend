@@ -1,19 +1,80 @@
 import DogCard from "../components/DogCard";
+import { useState, useEffect } from "react";
+import { API_ENDPOINTS } from "../config/api";
+import { getCookie } from "../utils/cookies";
 
-
-const dummyDogCardProps = {
-    imageUrl: "../../assets/images/germen-sheperd.jpg",
-    dogType: "German Shepherd",
-    address: "Uva wellassa, Badulla",
-    description: "It is a long established fact that a reader will be distracted by the readable content",
-    price: "$100"
-};
 
 export default function BrowsePets() {
+    const [pets, setPets] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [filters, setFilters] = useState({
+        location: "",
+        type: "",
+        price: ""
+    });
+
+    useEffect(() => {
+        fetchPets();
+    }, []);
+
+    const fetchPets = async () => {
+        try {
+            setLoading(true);
+            const token = getCookie('authToken');
+            
+            const headers: HeadersInit = {
+                'Content-Type': 'application/json',
+            };
+            
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+
+            const response = await fetch(API_ENDPOINTS.pets.getAll, {
+                method: 'GET',
+                headers: headers,
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch pets: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            console.log('Fetched pets:', data);
+            
+            // Handle both array response and object with data property
+            const petList = Array.isArray(data) ? data : data.data || [];
+            setPets(petList);
+            setError(null);
+        } catch (err) {
+            console.error('Error fetching pets:', err);
+            setError(err instanceof Error ? err.message : 'Failed to load pets');
+            setPets([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSearch = async (e: React.FormEvent) => {
+        e.preventDefault();
+        // TODO: Implement filtering based on selected filters
+        // For now, just refetch all pets
+        fetchPets();
+    };
+
+    const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setFilters(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
     return (
         <>
             <div className="min-h-screen bg-white overflow-auto">
-                <form onSubmit={() => { }} 
+                <form onSubmit={handleSearch} 
                 className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-6 flex flex-col md:flex-row gap-4 md:gap-10 justify-center mt-16 md:mt-20">
                     {/* Location Container */}
                     <div className="relative w-full md:w-72">
@@ -28,8 +89,12 @@ export default function BrowsePets() {
                         {/* The Select Box */}
                         <div className="relative flex items-center">
                             <select
+                                name="location"
+                                value={filters.location}
+                                onChange={handleFilterChange}
                                 className="w-full rounded-xl border-2 border-gray-300 bg-white/90 py-3 pl-10 pr-4 text-lg text-black focus:border-purple-500 outline-none appearance-none cursor-pointer"
                             >
+                                <option value="">All Locations</option>
                                 <option value="Srilanka">Srilanka</option>
                                 <option value="India">India</option>
                                 <option value="USA">USA</option>
@@ -61,11 +126,15 @@ export default function BrowsePets() {
                         {/* The Select Box */}
                         <div className="relative flex items-center">
                             <select
+                                name="type"
+                                value={filters.type}
+                                onChange={handleFilterChange}
                                 className="w-full rounded-xl border-2 border-gray-300 bg-white/90 py-3 pl-10 pr-4 text-lg text-black focus:border-purple-500 outline-none appearance-none cursor-pointer"
                             >
-                                <option value="BullDog">Bull Dog</option>
-                                <option value="Beagle">Beagle</option>
-                                <option value="Poodle">Poodle</option>
+                                <option value="">All Types</option>
+                                <option value="Dog">Dog</option>
+                                <option value="Cat">Cat</option>
+                                <option value="Bird">Bird</option>
                             </select>
 
                             {/* Custom Arrow Icon */}
@@ -94,10 +163,14 @@ export default function BrowsePets() {
                         {/* The Select Box */}
                         <div className="relative flex items-center">
                             <select
+                                name="price"
+                                value={filters.price}
+                                onChange={handleFilterChange}
                                 className="w-full rounded-xl border-2 border-gray-300 bg-white/90 py-3 pl-10 pr-4 text-lg text-black focus:border-purple-500 outline-none appearance-none cursor-pointer"
                             >
-                                <option value="Srilanka">Free</option>
-                                <option value="India">Paid</option>
+                                <option value="">All Prices</option>
+                                <option value="free">Free</option>
+                                <option value="paid">Paid</option>
 
                             </select>
 
@@ -119,12 +192,51 @@ export default function BrowsePets() {
                 </form>
 
                 <div>
+                    {/* Loading State */}
+                    {loading && (
+                        <div className="flex justify-center items-center mt-10 min-h-96">
+                            <div className="text-center">
+                                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
+                                <p className="text-gray-600 text-lg">Loading pets...</p>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Error State */}
+                    {error && (
+                        <div className="flex justify-center items-center mt-10 min-h-96">
+                            <div className="text-center">
+                                <p className="text-red-500 text-lg mb-4">⚠️ {error}</p>
+                                <button
+                                    onClick={fetchPets}
+                                    className="bg-purple-500 text-white py-2 px-6 rounded-xl font-bold"
+                                >
+                                    Try Again
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* No Pets State */}
+                    {!loading && !error && pets.length === 0 && (
+                        <div className="flex justify-center items-center mt-10 min-h-96">
+                            <div className="text-center">
+                                <p className="text-gray-600 text-lg">No pets found</p>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Dog Cards Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-10 px-4 md:px-20 mt-10">
-                        {Array.from({ length: 6 }).map((_, index) => (
-                            <DogCard key={index} {...dummyDogCardProps} />
-                        ))}
-                    </div>
+                    {!loading && pets.length > 0 && (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-10 px-4 md:px-20 mt-10">
+                            {pets.map((pet) => (
+                                <DogCard
+                                    key={pet.id}
+                                    petData={pet}
+                                />
+                            ))}
+                        </div>
+                    )}
 
                 </div>
                 

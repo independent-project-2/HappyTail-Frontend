@@ -50,42 +50,68 @@ function AddPets() {
             return;
         }
 
-        const formDataObj = new FormData();
+        // Check if there are any images
+        const hasImages = images.some(img => img !== null);
 
-        formDataObj.append("Name", formData.name);
-        formDataObj.append("Type", formData.type);
-        formDataObj.append("Breed", formData.breed);
-        formDataObj.append("Age", formData.age || "0");
-        formDataObj.append("Location", formData.location);
-        formDataObj.append("Price", formData.price || "0");
-        formDataObj.append("Description", formData.description);
-        formDataObj.append("Vaccinated", String(formData.vaccinated));
-        formDataObj.append("Neutered", String(formData.neutered));
-        formDataObj.append("Health_notes", formData.health_notes);
+        let response;
 
-        // add images
-        images.forEach((file) => {
-            if (file) {
-                formDataObj.append("Images", file);
-            }
-        });
+        if (hasImages) {
+            // Use FormData for multipart/form-data when there are images
+            const formDataObj = new FormData();
 
-        // Debug logging
-        console.log('FormData contents:');
-        for (let [key, value] of formDataObj.entries()) {
-            console.log(`  ${key}:`, value instanceof File ? `File: ${value.name}` : value);
-        }
-        console.log('Auth token present:', !!token);
-        console.log('API Endpoint:', API_ENDPOINTS.pets.create);
+            formDataObj.append("Name", formData.name);
+            formDataObj.append("Type", formData.type);
+            formDataObj.append("Breed", formData.breed);
+            formDataObj.append("Age", formData.age || "0");
+            formDataObj.append("Location", formData.location);
+            formDataObj.append("Price", formData.price || "0");
+            formDataObj.append("Description", formData.description);
+            formDataObj.append("Vaccinated", String(formData.vaccinated));
+            formDataObj.append("Neutered", String(formData.neutered));
+            formDataObj.append("Health_notes", formData.health_notes);
 
-        try {
-            const response = await fetch(API_ENDPOINTS.pets.create, {
+            // add images
+            images.forEach((file) => {
+                if (file) {
+                    formDataObj.append("Images", file);
+                }
+            });
+
+            console.log('Sending FormData with images');
+            response = await fetch(API_ENDPOINTS.pets.create, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
                 body: formDataObj,
             });
+        } else {
+            // Use JSON when there are no images
+            const jsonData = {
+                name: formData.name,
+                type: formData.type,
+                breed: formData.breed,
+                age: formData.age ? parseInt(formData.age) : 0,
+                location: formData.location,
+                price: formData.price ? parseInt(formData.price) : 0,
+                description: formData.description,
+                vaccinated: formData.vaccinated,
+                neutered: formData.neutered,
+                health_notes: formData.health_notes,
+            };
+
+            console.log('Sending JSON without images:', jsonData);
+            response = await fetch(API_ENDPOINTS.pets.create, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(jsonData),
+            });
+        }
+
+        try {
 
             if (!response.ok) {
                 // Get response text first (can only read body once)
