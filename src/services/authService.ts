@@ -196,6 +196,13 @@ export const register = async (userData: RegisterData): Promise<AuthResponse> =>
       console.error('Failed to parse response as JSON:', responseText);
       throw new Error('Invalid response from server');
     }
+    
+    console.log('Registration successful, response data:', data);
+    
+    // Store token in cookie (expires in 7 days)
+    if (data.token) {
+      setCookie('authToken', data.token, 7);
+      
       // Extract user info from JWT token
       const user = getUserFromToken(data.token);
       if (user) {
@@ -203,13 +210,6 @@ export const register = async (userData: RegisterData): Promise<AuthResponse> =>
         console.log('User info extracted from token:', user);
       }
       
-    
-    console.log('Registration successful, response data:', data);
-    
-    // Store token in cookie (expires in 7 days)
-    if (data.token) {
-      setCookie('authToken', data.token, 7);
-      localStorage.setItem('user', JSON.stringify(data.user));
       console.log('Token saved to cookie');
     }
 
