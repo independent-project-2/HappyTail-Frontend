@@ -58,9 +58,60 @@ export default function BrowsePets() {
 
     const handleSearch = async (e: React.FormEvent) => {
         e.preventDefault();
-        // TODO: Implement filtering based on selected filters
-        // For now, just refetch all pets
-        fetchPets();
+        try {
+            setLoading(true);
+            const token = getCookie('authToken');
+            
+            const headers: HeadersInit = {
+                'Content-Type': 'application/json',
+            };
+            
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+
+            // Build filter query parameters
+            const queryParams = new URLSearchParams();
+            if (filters.location) queryParams.append('location', filters.location);
+            if (filters.type) queryParams.append('type', filters.type);
+            if (filters.price) queryParams.append('price', filters.price);
+
+            const filterUrl = queryParams.toString() 
+                ? `${API_ENDPOINTS.pets.filter}?${queryParams.toString()}`
+                : API_ENDPOINTS.pets.getAll;
+
+            const response = await fetch(filterUrl, {
+                method: 'GET',
+                headers: headers,
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch filtered pets: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            console.log('Filtered pets:', data);
+            
+            // Handle both array response and object with data property
+            const petList = Array.isArray(data) ? data : data.data || [];
+            setPets(petList);
+            setError(null);
+        } catch (err) {
+            console.error('Error filtering pets:', err);
+            setError(err instanceof Error ? err.message : 'Failed to filter pets');
+            setPets([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleClearFilters = () => {
+        setFilters({
+            location: "",
+            type: "",
+            price: ""
+        });
+        fetchPets(); // Fetch all pets without filters
     };
 
     const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -188,10 +239,43 @@ export default function BrowsePets() {
                     </div>
 
 
-                    <button className="block w-full rounded-xl md:w-50 bg-purple-500 border border-gray-700 text-white py-3 px-4 pr-8 rounded leading-tight focus:outline-border font-bold text-xl md:text-2xl" type="submit">Search</button>
+                    <div className='flex gap-3 w-full md:w-auto'>
+                        <button 
+                            className="flex-1 md:flex-none rounded-xl bg-purple-500 text-white py-3 px-6 font-bold text-lg hover:bg-purple-600 transition-colors" 
+                            type="submit"
+                        >
+                            🔍 Search
+                        </button>
+                        <button 
+                            className="flex-1 md:flex-none rounded-xl bg-slate-300 text-slate-700 py-3 px-6 font-bold text-lg hover:bg-slate-400 transition-colors" 
+                            type="button"
+                            onClick={handleClearFilters}
+                        >
+                            Clear
+                        </button>
+                    </div>
                 </form>
 
                 <div>
+                    {/* Filter Results Indicator */}
+                    {!loading && (
+                        <div className='px-4 md:px-20 mt-8 flex flex-col sm:flex-row gap-4 items-center justify-between'>
+                            <div className='text-slate-700 font-semibold'>
+                                <span className='text-2xl font-bold text-purple-600'>{pets.length}</span>
+                                <span className='ml-2'>pets found</span>
+                                {(filters.location || filters.type || filters.price) && (
+                                    <span className='ml-4 text-sm text-slate-500'>
+                                        (Filtered by: {[
+                                            filters.location && `Location: ${filters.location}`,
+                                            filters.type && `Type: ${filters.type}`,
+                                            filters.price && `Price: ${filters.price}`
+                                        ].filter(Boolean).join(', ')})
+                                    </span>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
                     {/* Loading State */}
                     {loading && (
                         <div className="flex justify-center items-center mt-10 min-h-96">
@@ -221,7 +305,20 @@ export default function BrowsePets() {
                     {!loading && !error && pets.length === 0 && (
                         <div className="flex justify-center items-center mt-10 min-h-96">
                             <div className="text-center">
-                                <p className="text-gray-600 text-lg">No pets found</p>
+                                <p className="text-gray-600 text-xl font-semibold mb-4">😿 No pets found</p>
+                                <p className="text-gray-500 mb-6">
+                                    {(filters.location || filters.type || filters.price) 
+                                        ? 'Try adjusting your filters' 
+                                        : 'Check back soon for new additions'}
+                                </p>
+                                {(filters.location || filters.type || filters.price) && (
+                                    <button
+                                        onClick={handleClearFilters}
+                                        className="bg-purple-500 text-white py-2 px-6 rounded-xl font-bold hover:bg-purple-600 transition-colors"
+                                    >
+                                        Clear Filters
+                                    </button>
+                                )}
                             </div>
                         </div>
                     )}
