@@ -1,46 +1,42 @@
-/**
- * API Configuration
- * Backend URL configuration for the HappyTail application
- */
-
 import { getCookie } from '../utils/cookies';
 
-// Base URL for the backend API
-// In development, use proxy to avoid CORS issues
-// In production, use the full backend URL
-export const API_BASE_URL = import.meta.env.DEV 
-  ? '' // Use proxy in development
-  : 'https://happytail-backend-btdnewfhhvajeybe.southeastasia-01.azurewebsites.net';
+// API Configuration
+const BASE_URL = import.meta.env.DEV ? '' : 'https://happytail-backend-btdnewfhhvajeybe.southeastasia-01.azurewebsites.net';
 
-// API Endpoints
+export const API_BASE_URL = BASE_URL;
+
 export const API_ENDPOINTS = {
-  // Authentication endpoints
   auth: {
-    login: `${API_BASE_URL}/api/User/signin`,
-    register: `${API_BASE_URL}/api/User/signup`,
-    logout: `${API_BASE_URL}/api/User/logout`,
+    login: `${BASE_URL}/api/User/signin`,
+    register: `${BASE_URL}/api/User/signup`,
+    logout: `${BASE_URL}/api/User/logout`,
+    refresh: `${BASE_URL}/api/User/refresh`,
   },
-  // Add other endpoints as needed
   pets: {
-    browse: `${API_BASE_URL}/api/Pet/all`,
-    filter: `${API_BASE_URL}/api/Pet/filter`,
-    create: `${API_BASE_URL}/api/Pet/create`,
-    update: (id: string) => `${API_BASE_URL}/api/Pet/update/${id}`,
-    delete: (id: string) => `${API_BASE_URL}/api/Pet/delete/${id}`,
+    getAll: `${BASE_URL}/api/Pet/all`,
+    getById: (id: string) => `${BASE_URL}/api/Pet/${id}`,
+    create: `${BASE_URL}/api/Pet/create`,
+    update: (id: string) => `${BASE_URL}/api/Pet/update/${id}`,
+    delete: (id: string) => `${BASE_URL}/api/Pet/delete/${id}`,
+    filter: `${BASE_URL}/api/Pet/filter`,
+    uploadImage: `${BASE_URL}/api/Pet/upload-image`,
   },
   blog: {
-    all: `${API_BASE_URL}/api/Blog/all`,
-    create: `${API_BASE_URL}/api/Blog/create`,
+    getAll: `${BASE_URL}/api/blog`,
+    create: `${BASE_URL}/api/blog`,
+    getById: (id: string) => `${BASE_URL}/api/blog/${id}`,
   },
-  user: {
-    profile: `${API_BASE_URL}/api/User/profile`,
+  users: {
+    profile: `${BASE_URL}/api/users/profile`,
+    updateProfile: `${BASE_URL}/api/users/profile`,
   },
 };
 
 /**
- * Default headers for API requests
+ * Get headers for API requests
+ * @param includeAuth - If true, includes Authorization header with token from cookie
  */
-export const getHeaders = (includeAuth: boolean = true) => {
+export const getHeaders = (includeAuth: boolean = true): HeadersInit => {
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
   };

@@ -8,9 +8,9 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://happytail-backend-btdnewfhhvajeybe.southeastasia-01.azurewebsites.net',
+        target: 'http://localhost:8080',
         changeOrigin: true,
-        secure: true,
+        secure: false,
       }
     }
   }

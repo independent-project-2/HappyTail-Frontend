@@ -1,9 +1,13 @@
-import { useRef, useState, useMemo } from 'react';
+import { useRef, useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     User, Mail, MapPin, Phone, Plus, Package,
-    Trash2, BookOpen, Camera, X, Check, LogOut
+    Trash2, BookOpen, Camera, X, Check, LogOut, Edit2
 } from 'lucide-react';
+import { API_ENDPOINTS } from '../config/api';
+import { getCookie } from '../utils/cookies';
+import { useAuthContext } from '../context/AuthContext';
+import { decodeJWT } from '../utils/jwt';
 
 interface Pet {
     id: number;
@@ -12,6 +16,15 @@ interface Pet {
     breed: string;
     status: 'Available' | 'Adopted';
     image: string;
+    userId?: number;
+    shelterId?: number;
+    age?: number;
+    location?: string;
+    price?: number;
+    description?: string;
+    vaccinated?: boolean;
+    neutered?: boolean;
+    health_notes?: string;
 }
 
 interface Blog {
@@ -23,10 +36,7 @@ interface Blog {
 }
 
 
-const initialPets: Pet[] = [
-    { id: 1, name: 'Buddy', type: 'Dog', breed: 'Golden Retriever', status: 'Available', image: '/assets/Images/piclogo.png' },
-    { id: 2, name: 'Luna', type: 'Cat', breed: 'Persian', status: 'Adopted', image: '/assets/Images/piclogo.png' }
-];
+const initialPets: Pet[] = [];
 
 const initialBlogs: Blog[] = [
     { id: 1, title: 'Pet Care Tips', text: 'How to take care of your golden retriever...', image: '/assets/Images/piclogo.png', date: 'Jan 27, 2026' }
@@ -34,7 +44,7 @@ const initialBlogs: Blog[] = [
 
 
 
-const PetCard = ({ pet, onDelete, deletingId }: { pet: Pet, onDelete: (id: number) => void, deletingId: number | null }) => (
+const PetCard = ({ pet, onDelete, onEdit, deletingId }: { pet: Pet, onDelete: (id: number) => Promise<void> | void, onEdit: (pet: Pet) => void, deletingId: number | null }) => (
     <div
         className={`group bg-slate-50/50 rounded-3xl p-4 border border-transparent hover:border-purple-100 hover:bg-white transition-all duration-300 hover:shadow-xl hover:shadow-purple-50 transform ${deletingId === pet.id ? 'scale-95 opacity-0' : 'scale-100 opacity-100'}`}
     >
@@ -52,13 +62,22 @@ const PetCard = ({ pet, onDelete, deletingId }: { pet: Pet, onDelete: (id: numbe
                         <p className="text-xs md:text-sm text-slate-500 font-medium truncate mb-2">{pet.breed}</p>
                         <span className="px-2 py-0.5 bg-white border border-slate-100 rounded-md text-[9px] text-slate-400 font-bold uppercase">{pet.type}</span>
                     </div>
-                    <button
-                        onClick={() => onDelete(pet.id)}
-                        className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all shrink-0 md:opacity-0 md:group-hover:opacity-100"
-                        title="Delete listing"
-                    >
-                        <Trash2 size={18} />
-                    </button>
+                    <div className="flex gap-2 shrink-0">
+                        <button
+                            onClick={() => onEdit(pet)}
+                            className="p-2 text-slate-300 hover:text-blue-500 hover:bg-blue-50 rounded-xl transition-all md:opacity-0 md:group-hover:opacity-100"
+                            title="Edit pet"
+                        >
+                            <Edit2 size={18} />
+                        </button>
+                        <button
+                            onClick={() => onDelete(pet.id)}
+                            className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all md:opacity-0 md:group-hover:opacity-100"
+                            title="Delete listing"
+                        >
+                            <Trash2 size={18} />
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -88,6 +107,7 @@ export default function ProfilePage() {
     const navigate = useNavigate();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const blogImageInputRef = useRef<HTMLInputElement>(null);
+    const authContext = useAuthContext();
 
     // State management
     const [pets, setPets] = useState<Pet[]>(initialPets);
@@ -96,9 +116,164 @@ export default function ProfilePage() {
     const [petFilter, setPetFilter] = useState<'All' | 'Available' | 'Adopted'>('All');
     const [deletingId, setDeletingId] = useState<number | null>(null);
     const [deletingPetId, setDeletingPetId] = useState<number | null>(null);
+    const [loading, setLoading] = useState(true);
 
     // New blog draft state
     const [newBlog, setNewBlog] = useState({ title: '', text: '', image: '' });
+
+    // Fetch user's pets
+    useEffect(() => {
+        fetchUserPets();
+    }, []);
+
+    const fetchUserPets = async () => {
+        try {
+            setLoading(true);
+            const token = getCookie('authToken');
+            
+            // Extract user ID and shelter ID from JWT token
+            let currentUserId: string | null = null;
+            let userShelterId: string | null = null;
+            if (token) {
+                const decoded = decodeJWT(token);
+                currentUserId = decoded?.nameid;
+                userShelterId = decoded?.shelterId || decoded?.shelter_id;
+                console.log('Current user ID from JWT:', currentUserId);
+                console.log('Complete JWT payload:', decoded);
+                console.log('User Shelter ID:', userShelterId);
+            }
+            
+            const headers: HeadersInit = {
+                'Content-Type': 'application/json',
+            };
+            
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+
+            const response = await fetch(API_ENDPOINTS.pets.getAll, {
+                method: 'GET',
+                headers: headers,
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch pets: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            console.log('Fetched all pets:', data);
+            
+            // Handle both array response and object with data property
+            const petList = Array.isArray(data) ? data : data.data || [];
+            
+            // Map backend pet structure to Pet interface
+            const mappedPets: Pet[] = petList.map((pet: any, index: number) => {
+                // Log first pet to see what fields are available
+                if (index === 0) {
+                    console.log('Sample pet data (first):', pet);
+                }
+                return {
+                    id: pet.id,
+                    name: pet.name || 'Unknown',
+                    type: pet.type || 'Unknown',
+                    breed: pet.breed || 'Unknown',
+                    status: pet.status === 'AVAILABLE' ? 'Available' : 'Adopted',
+                    image: pet.imageUrl || (pet.images && pet.images[0]) || '/assets/Images/piclogo.png',
+                    userId: pet.userId || pet.user_id || pet.userId,
+                    shelterId: pet.shelter_id || pet.shelterId,
+                    age: pet.age,
+                    location: pet.location,
+                    price: pet.price,
+                    description: pet.description,
+                    vaccinated: pet.vaccinated,
+                    neutered: pet.neutered,
+                    health_notes: pet.health_notes,
+                };
+            });
+            
+            // Filter to show only pets created by the current user
+            let userPets = mappedPets;
+            
+            if (currentUserId || userShelterId) {
+                userPets = mappedPets.filter(pet => {
+                    // Try filtering by userId first
+                    if (currentUserId) {
+                        const petOwnerId = pet.userId?.toString();
+                        if (petOwnerId === currentUserId) {
+                            return true;
+                        }
+                    }
+                    
+                    // Fallback to filtering by shelter ID if available
+                    if (userShelterId) {
+                        const petShelterId = pet.shelterId?.toString();
+                        if (petShelterId === userShelterId) {
+                            return true;
+                        }
+                    }
+                    
+                    return false;
+                });
+                
+                console.log(`Filtered ${mappedPets.length} total pets to ${userPets.length} user pets`);
+            } else {
+                console.warn('Could not extract user ID or shelter ID from token');
+            }
+            
+            setPets(userPets);
+        } catch (err) {
+            console.error('Error fetching pets:', err);
+            setPets([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const deletePetFromBackend = async (petId: number) => {
+        try {
+            const token = getCookie('authToken');
+            if (!token) {
+                alert('Please log in to delete pets');
+                return;
+            }
+
+            console.log('Attempting to delete pet with ID:', petId);
+            
+            const endpoint = API_ENDPOINTS.pets.delete(petId.toString());
+            console.log('Delete endpoint:', endpoint);
+
+            const response = await fetch(endpoint, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            console.log('Delete response status:', response.status);
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Delete error response:', errorText);
+                throw new Error(`Failed to delete pet: ${response.statusText}`);
+            }
+
+            // Remove from UI after successful deletion
+            setPets(prevPets => prevPets.filter(p => p.id !== petId));
+            console.log('Pet deleted successfully');
+            alert('Pet deleted successfully');
+        } catch (err) {
+            console.error('Error deleting pet:', err);
+            alert('Failed to delete pet. Please try again.');
+        }
+    };
+
+    const handleEditPet = (pet: Pet) => {
+        // Navigate to AddPets page with pet data in location state
+        navigate('/add-pets', { 
+            state: { editingPet: pet }
+        });
+    };
 
     const handleButtonClick = () => fileInputRef.current?.click();
     const handleBlogImageTrigger = () => blogImageInputRef.current?.click();
@@ -125,12 +300,17 @@ export default function ProfilePage() {
         }, 300);
     };
 
-    const handleDeletePet = (id: number) => {
+    const handleDeletePet = async (id: number) => {
         setDeletingPetId(id);
-        setTimeout(() => {
-            setPets(pets.filter(p => p.id !== id));
+        try {
+            // Call backend delete 
+            await deletePetFromBackend(id);
+            // Wait a moment for animation
+            await new Promise(resolve => setTimeout(resolve, 300));
+        } finally {
+            // Reset animation state regardless of success/failure
             setDeletingPetId(null);
-        }, 300);
+        }
     };
 
     const handleAddBlog = (e: React.FormEvent) => {
@@ -170,11 +350,11 @@ export default function ProfilePage() {
                                         <Plus size={20} className="hidden md:block" />
                                     </button>
                                 </div>
-                                <h1 className="text-xl md:text-2xl font-bold text-slate-900 mb-1">Alex Thompson</h1>
+                                <h1 className="text-xl md:text-2xl font-bold text-slate-900 mb-1">{authContext?.user?.name || 'User'}</h1>
                                 <p className="text-slate-500 font-medium mb-6 md:mb-8 text-xs md:text-sm">Pet Enthusiast & Volunteer</p>
                                 <div className="w-full space-y-3 text-left">
                                     {[
-                                        { icon: <Mail size={16} />, label: 'Email', value: 'alex.t@example.com', color: 'text-purple-400' },
+                                        { icon: <Mail size={16} />, label: 'Email', value: authContext?.user?.email || 'N/A', color: 'text-purple-400' },
                                         { icon: <Phone size={16} />, label: 'Phone', value: '+1 (555) 123-4567', color: 'text-blue-400' },
                                         { icon: <MapPin size={16} />, label: 'Location', value: 'San Francisco, CA', color: 'text-orange-400' }
                                     ].map((item, idx) => (
@@ -226,7 +406,12 @@ export default function ProfilePage() {
                             </div>
 
                             <div className="space-y-4 flex-1">
-                                {filteredPets.length === 0 ? (
+                                {loading ? (
+                                    <div className="flex flex-col items-center justify-center py-10 text-slate-400">
+                                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500 mb-2"></div>
+                                        <p className="text-xs">Loading your listings...</p>
+                                    </div>
+                                ) : filteredPets.length === 0 ? (
                                     <div className="flex flex-col items-center justify-center py-10 text-slate-400 italic text-xs bg-slate-50/50 rounded-2xl border border-dashed border-slate-100">
                                         No listings found.
                                     </div>
@@ -236,6 +421,7 @@ export default function ProfilePage() {
                                             key={pet.id}
                                             pet={pet}
                                             onDelete={handleDeletePet}
+                                            onEdit={handleEditPet}
                                             deletingId={deletingPetId}
                                         />
                                     ))
