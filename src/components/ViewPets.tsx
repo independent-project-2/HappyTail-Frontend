@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, MapPin, Heart, Syringe, Scissors, Trophy, DollarSign } from 'lucide-react';
 
 interface PetData {
   id?: number;
@@ -73,62 +73,154 @@ export default function ViewPets({ onClose, petData }: { onClose: () => void; pe
   const totalImages = imageArray.length || 1;
 
   return (
-    <div ref={viewPetsRef} onClick={closeViewPets} className='fixed inset-0 bg-opacity-30 backdrop-blur-sm z-50 flex items-center justify-center'>
+    <div ref={viewPetsRef} onClick={closeViewPets} className='fixed inset-0 bg-black/50 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-100 transition-opacity duration-300'>
 
-      <div className='relative w-3/4 border-2 border-solid border-gray-300 rounded-xl flex flex-row gap-10 p-10 justify-center text-black bg-white'>
-        <X onClick={onClose} size={30} className="cursor-pointer absolute right-0 top-0 m-4" />
+      <div className='relative w-full max-w-4xl bg-white rounded-3xl flex flex-col lg:flex-row gap-0 overflow-hidden text-black bg-gradient-to-br from-white via-white to-purple-50 shadow-2xl scale-100 transition-transform duration-300 max-h-[90vh] overflow-y-auto'>
+        
+        {/* Close Button */}
+        <button 
+          onClick={onClose}
+          className='absolute top-4 right-4 z-10 p-2 hover:bg-slate-100 rounded-full transition-all duration-200 hover:scale-110'
+        >
+          <X size={28} className="text-slate-600" />
+        </button>
 
-        <div className='flex flex-col items-center'>
-          <img src={currentImage}
-            alt={petData?.name || 'Pet'}
-            className='rounded-xl w-96 h-96 object-cover'
-            onError={(e) => {
-              const img = e.target as HTMLImageElement;
-              img.src = '../../assets/images/germen-sheperd.jpg';
-            }}
-          ></img>
-
-          <div className='flex flex-row gap-3 mt-4 cursor-pointer'>
-            <ChevronLeft size={30} onClick={handlePrevImage} className='hover:text-purple-500' />
-            <div className='text-gray-400 text-xl'>{currentImageIndex + 1}/{totalImages}</div>
-            <ChevronRight size={30} onClick={handleNextImage} className='hover:text-purple-500' />
+        {/* Image Section */}
+        <div className='w-full lg:w-1/2 flex flex-col items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 p-6 lg:p-8'>
+          <div className='relative w-full max-w-96 rounded-2xl overflow-hidden shadow-lg'>
+            <img 
+              src={currentImage}
+              alt={petData?.name || 'Pet'}
+              className='w-full h-96 object-cover'
+              onError={(e) => {
+                const img = e.target as HTMLImageElement;
+                img.src = '../../assets/images/germen-sheperd.jpg';
+              }}
+            />
+            {/* Image Badge */}
+            <div className='absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-bold text-slate-700 shadow-lg'>
+              {currentImageIndex + 1} / {totalImages}
+            </div>
           </div>
 
+          {/* Image Navigation */}
+          {totalImages > 1 && (
+            <div className='flex flex-row gap-4 mt-6 items-center'>
+              <button
+                onClick={handlePrevImage}
+                className='p-3 hover:bg-purple-100 rounded-full transition-all duration-200 hover:scale-110 hover:text-purple-600'
+              >
+                <ChevronLeft size={24} />
+              </button>
+              <div className='flex gap-2'>
+                {imageArray.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      index === currentImageIndex
+                        ? 'bg-purple-500 w-8'
+                        : 'bg-slate-300 w-2 hover:bg-slate-400 cursor-pointer'
+                    }`}
+                    onClick={() => setCurrentImageIndex(index)}
+                  />
+                ))}
+              </div>
+              <button
+                onClick={handleNextImage}
+                className='p-3 hover:bg-purple-100 rounded-full transition-all duration-200 hover:scale-110 hover:text-purple-600'
+              >
+                <ChevronRight size={24} />
+              </button>
+            </div>
+          )}
         </div>
 
-        <div className='relative flex flex-col gap-2 text-black'>
-          <div className='font-bold text-4xl'>{petData?.name || 'Pet Name'}</div>
-          <div className='text-lg text-gray-600'>{petData?.breed || 'Breed'} • {petData?.type || 'Type'}</div>
-          <div className=''>{petData?.location || 'Location not specified'}</div>
-          <div className='text-gray-400 max-w-md'>{petData?.description || 'No description available'}</div>
-          
-          <div className='flex flex-col gap-1 mt-4 pt-4 border-t border-gray-200'>
-            <div className='flex flex-row gap-2'>
-              <div className='font-bold'>Age:</div>
-              <div className='text-gray-400'>{petData?.age || 'Unknown'} year(s)</div>
+        {/* Details Section */}
+        <div className='w-full lg:w-1/2 p-6 lg:p-8 flex flex-col gap-5'>
+          {/* Header */}
+          <div className='space-y-2'>
+            <div className='flex items-center gap-3'>
+              <h1 className='text-4xl font-bold text-slate-900'>{petData?.name || 'Pet Name'}</h1>
+              <Heart className='text-red-500 fill-red-500' size={24} />
             </div>
-            
-            <div className='flex flex-row gap-2'>
-              <div className='font-bold'>Vaccinated:</div>
-              <div className='text-gray-400'>{petData?.vaccinated ? '✓ Yes' : 'No'}</div>
+            <div className='flex items-center gap-2 text-slate-600'>
+              <span className='text-lg font-semibold'>{petData?.breed || 'Breed'}</span>
+              <span className='text-slate-300'>•</span>
+              <span className='text-lg font-semibold'>{petData?.type || 'Type'}</span>
             </div>
-
-            <div className='flex flex-row gap-2'>
-              <div className='font-bold'>Neutered:</div>
-              <div className='text-gray-400'>{petData?.neutered ? '✓ Yes' : 'No'}</div>
-            </div>
-
-            {petData?.health_notes && (
-              <div className='flex flex-row gap-2'>
-                <div className='font-bold'>Health Notes:</div>
-                <div className='text-gray-400 text-sm'>{petData.health_notes}</div>
-              </div>
-            )}
           </div>
 
-          <div className='font-bold text-xl uppercase mt-2'>${petData?.price || '0'}</div>
-          <button className="bg-purple-500 text-white text-xl rounded-lg px-6 py-2 mt-4 hover:bg-purple-600 absolute right-4 bottom-4">
-             Get in Touch
+          {/* Location Badge */}
+          <div className='flex items-center gap-2 px-4 py-3 bg-orange-50 rounded-lg border-2 border-orange-100'>
+            <MapPin size={20} className='text-orange-500' />
+            <span className='font-semibold text-slate-700'>{petData?.location || 'Location not specified'}</span>
+          </div>
+
+          {/* Description */}
+          {petData?.description && (
+            <div className='p-4 bg-slate-50 rounded-lg border-l-4 border-purple-500'>
+              <p className='text-slate-700 leading-relaxed'>{petData.description}</p>
+            </div>
+          )}
+
+          {/* Health & Info Cards */}
+          <div className='grid grid-cols-2 gap-3'>
+            {/* Age Card */}
+            <div className='p-3 bg-blue-50 rounded-lg border-2 border-blue-100'>
+              <div className='text-xs font-bold text-blue-600 uppercase tracking-wider'>Age</div>
+              <div className='text-xl font-bold text-slate-900 mt-1'>{petData?.age || '?'} years</div>
+            </div>
+
+            {/* Vaccinated Card */}
+            <div className={`p-3 rounded-lg border-2 flex items-center gap-2 ${
+              petData?.vaccinated 
+                ? 'bg-green-50 border-green-100' 
+                : 'bg-slate-50 border-slate-100'
+            }`}>
+              <Syringe size={20} className={petData?.vaccinated ? 'text-green-600' : 'text-slate-400'} />
+              <div>
+                <div className='text-xs font-bold uppercase tracking-wider text-slate-600'>Vaccinated</div>
+                <div className='text-lg font-bold text-slate-900'>{petData?.vaccinated ? 'Yes ✓' : 'No'}</div>
+              </div>
+            </div>
+
+            {/* Neutered Card */}
+            <div className={`p-3 rounded-lg border-2 flex items-center gap-2 ${
+              petData?.neutered 
+                ? 'bg-pink-50 border-pink-100' 
+                : 'bg-slate-50 border-slate-100'
+            }`}>
+              <Scissors size={20} className={petData?.neutered ? 'text-pink-600' : 'text-slate-400'} />
+              <div>
+                <div className='text-xs font-bold uppercase tracking-wider text-slate-600'>Neutered</div>
+                <div className='text-lg font-bold text-slate-900'>{petData?.neutered ? 'Yes ✓' : 'No'}</div>
+              </div>
+            </div>
+
+            {/* Price Card */}
+            <div className='p-3 bg-purple-50 rounded-lg border-2 border-purple-100'>
+              <div className='text-xs font-bold text-purple-600 uppercase tracking-wider flex items-center gap-1'>
+                <DollarSign size={16} /> Price
+              </div>
+              <div className='text-2xl font-bold text-purple-600 mt-1'>${petData?.price || '0'}</div>
+            </div>
+          </div>
+
+          {/* Health Notes */}
+          {petData?.health_notes && (
+            <div className='p-4 bg-amber-50 rounded-lg border-2 border-amber-100'>
+              <div className='flex items-center gap-2 mb-2'>
+                <Trophy size={18} className='text-amber-600' />
+                <h3 className='font-bold text-slate-900'>Health Notes</h3>
+              </div>
+              <p className='text-slate-700 text-sm'>{petData.health_notes}</p>
+            </div>
+          )}
+
+          {/* CTA Button */}
+          <button className='w-full mt-4 py-4 px-6 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-bold text-lg rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95 flex items-center justify-center gap-2'>
+            <Heart size={20} />
+            Get in Touch
           </button>
         </div>
       </div>

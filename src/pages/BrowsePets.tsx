@@ -228,7 +228,7 @@ export default function BrowsePets() {
 
                     {/* Dog Cards Grid */}
                     {!loading && pets.length > 0 && (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-10 px-4 md:px-20 mt-10">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-10 px-4 md:px-20 mt-10 auto-rows-fr">
                             {pets.map((pet) => (
                                 <DogCard
                                     key={pet.id}

@@ -254,221 +254,289 @@ function AddPets() {
 
 
     return (
-        <div className='min-h-screen overflow-auto'>
-            <div className='p-4 md:p-10 pt-16 md:pt-20 flex flex-col text-black justify-center items-center'>
-                <div className='flex flex-col items-center gap-2'>
-                    <h1 className='text-xl md:text-2xl font-bold'>{isEditMode ? 'Edit Pet' : 'Add Your Pets'}</h1>
-                    <div className='text-lg md:text-2xl text-center'>{isEditMode ? 'Update your pet\'s information' : 'Help your pet find the perfect new home'}</div>
+        <div className='min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 overflow-auto'>
+            {/* Background decorative elements */}
+            <div className='fixed top-0 right-0 w-96 h-96 bg-purple-100 rounded-full blur-3xl opacity-20 -z-10' />
+            <div className='fixed bottom-0 left-0 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-20 -z-10' />
+
+            <div className='p-4 md:p-8 pt-20 md:pt-24 flex flex-col text-slate-900 justify-center items-center min-h-screen'>
+                {/* Header Section */}
+                <div className='flex flex-col items-center gap-3 mb-12 max-w-2xl'>
+                    <div className='flex items-center gap-3'>
+                        <div className='w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white text-xl font-bold'>
+                            🐾
+                        </div>
+                        <h1 className='text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent'>
+                            {isEditMode ? 'Edit Pet Profile' : 'Add Your Pet'}
+                        </h1>
+                    </div>
+                    <p className='text-slate-600 text-center text-lg'>{isEditMode ? 'Update your pet\'s information to keep it fresh and accurate' : 'Help your furry friend find the perfect new home'}</p>
                 </div>
 
-                <form action=""
+                <form
+                    id="pet-form"
                     onSubmit={handleSubmit}
-                    className='flex flex-col lg:flex-row pt-5 gap-4 w-full max-w-6xl'
+                    className='flex flex-col lg:grid lg:grid-cols-3 gap-6 w-full max-w-7xl'
                 >
                     {/*Left Side Section*/}
                     {/*Basic Information Section*/}
-                    <span className='flex flex-col gap-3 md:gap-1 p-4 border-solid border-2 border-gray-300 rounded-lg shadow-gray-500 shadow-lg w-full lg:w-auto'>
-                        <div className='text-xl md:text-2xl font-bold m-1'>Basic Information</div>
-
-                        <div className='flex flex-col md:flex-row gap-4 md:gap-20'>
-
-                            <div className='flex flex-col w-full md:w-auto'>
-                                <label htmlFor="pet-name">Pet Name</label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    className='border-solid border-2 border-gray-300 rounded-md p-1 w-full' />
+                    <div className='lg:col-span-2 space-y-6'>
+                        {/* Basic Info Card */}
+                        <div className='bg-white rounded-2xl p-7 shadow-sm border border-slate-100 hover:shadow-lg hover:shadow-purple-100 transition-all duration-300'>
+                            <div className='flex items-center gap-3 mb-6'>
+                                <div className='w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center text-white font-bold'>
+                                    📋
+                                </div>
+                                <h2 className='text-2xl font-bold text-slate-900'>Basic Information</h2>
                             </div>
 
-                            <div className='flex flex-col w-full md:w-auto'>
-                                <label htmlFor="pet-type">Pet Type</label>
-                                <input
-                                    type="text"
-                                    id="type"
-                                    name="type"
-                                    value={formData.type}
-                                    onChange={handleChange}
-                                    className='border-solid border-2 border-gray-300 rounded-md p-1 w-full' />
-                            </div>
-                        </div>
-
-                        <div className='flex flex-col md:flex-row gap-4 md:gap-20'>
-                            <div className='flex flex-col w-full md:w-auto'>
-                                <label htmlFor="breed">Breed</label>
-                                <input
-                                    type="text"
-                                    id="breed"
-                                    name="breed"
-                                    value={formData.breed}
-                                    onChange={handleChange}
-                                    className='border-solid border-2 border-gray-300 rounded-md p-1 w-full' />
-                            </div>
-
-                            <div className='flex flex-col w-full md:w-auto'>
-                                <label htmlFor="age">Age(Years)</label>
-                                <input
-                                    type="text"
-                                    id="age"
-                                    name="age"
-                                    value={formData.age}
-                                    onChange={handleChange}
-                                    className='border-solid border-2 border-gray-300 rounded-md p-1 w-full' />
-                            </div>
-                        </div>
-
-                        <div className='flex flex-col'>
-                            <label htmlFor="description">Description</label>
-                            <textarea
-                                id="description"
-                                name="description"
-                                value={formData.description}
-                                onChange={handleChange}
-                                className='border-solid border-2 border-gray-300 rounded-md p-1 h-24 md:h-32 w-full'
-                            ></textarea>
-                        </div>
-
-                        <div className='flex flex-col md:flex-row gap-4 md:gap-20'>
-                            <div className='flex flex-col w-full md:w-auto'>
-                                <label htmlFor="Location">Location</label>
-                                <input
-                                    type="text"
-                                    id="location"
-                                    name="location"
-                                    value={formData.location}
-                                    onChange={handleChange}
-                                    className='border-solid border-2 border-gray-300 rounded-md p-1 w-full' />
-                            </div>
-
-                            <div className='flex flex-col w-full md:w-auto'>
-                                <label htmlFor="price">Price(Leave Blank For Free)</label>
-                                <input
-                                    type="text"
-                                    id="price"
-                                    name="price"
-                                    value={formData.price}
-                                    onChange={handleChange}
-                                    className='border-solid border-2 border-gray-300 rounded-md p-1 w-full' />
-                            </div>
-                        </div>
-
-                        <div className='flex flex-col md:flex-row gap-4 md:gap-20'>
-                            <div className='flex flex-col w-full md:w-auto'>
-                                <label htmlFor="status">Status</label>
-                                <select
-                                    id="status"
-                                    name="status"
-                                    value={formData.status}
-                                    onChange={handleChange}
-                                    className='border-solid border-2 border-gray-300 rounded-md p-1 w-full' >
-                                    <option value="AVAILABLE">Available</option>
-                                    <option value="ADOPTED">Adopted</option>
-                                </select>
-                            </div>
-                        </div>
-                    </span>
-
-                    {/*Right Side Section*/}
-                    <div className='flex flex-col gap-4 w-full lg:w-auto'>
-
-                        {/*Upload Images Section*/}
-                        <span className='flex flex-col items-center gap-2 p-4 border-solid border-2 border-gray-300 rounded-lg shadow-gray-500 shadow-lg'>
-                            <div className='text-xl md:text-2xl font-bold m-2'>Upload Images</div>
-
-                            <div className='flex flex-col sm:flex-row gap-4 sm:gap-0'>
-                                <div className='flex flex-col gap-1 justify-center items-center'>
-                                    <div className='sm:mr-5'>
-                                        <ImageUpload onFileSelect={(file) => handleImageSelect(0, file)} />
-
+                            <div className='space-y-5'>
+                                {/* Row 1: Name and Type */}
+                                <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
+                                    <div className='flex flex-col'>
+                                        <label htmlFor="name" className='text-sm font-bold text-slate-700 mb-2 block'>Pet Name *</label>
+                                        <input
+                                            type="text"
+                                            id="name"
+                                            name="name"
+                                            required
+                                            value={formData.name}
+                                            onChange={handleChange}
+                                            placeholder='e.g., Buddy, Luna, Max'
+                                            className='px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all duration-200 bg-slate-50 hover:bg-white text-slate-900 placeholder-slate-400' />
                                     </div>
-                                    <label htmlFor='image-1'>Image 1</label>
+
+                                    <div className='flex flex-col'>
+                                        <label htmlFor="type" className='text-sm font-bold text-slate-700 mb-2 block'>Pet Type *</label>
+                                        <input
+                                            type="text"
+                                            id="type"
+                                            name="type"
+                                            required
+                                            value={formData.type}
+                                            onChange={handleChange}
+                                            placeholder='e.g., Dog, Cat, Rabbit'
+                                            className='px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all duration-200 bg-slate-50 hover:bg-white text-slate-900 placeholder-slate-400' />
+                                    </div>
                                 </div>
 
-                                <div className='flex flex-col gap-1 justify-center items-center'>
-                                    <div className='sm:mr-5'>
-                                        <ImageUpload onFileSelect={(file) => handleImageSelect(1, file)} />
+                                {/* Row 2: Breed and Age */}
+                                <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
+                                    <div className='flex flex-col'>
+                                        <label htmlFor="breed" className='text-sm font-bold text-slate-700 mb-2 block'>Breed *</label>
+                                        <input
+                                            type="text"
+                                            id="breed"
+                                            name="breed"
+                                            required
+                                            value={formData.breed}
+                                            onChange={handleChange}
+                                            placeholder='e.g., Golden Retriever'
+                                            className='px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all duration-200 bg-slate-50 hover:bg-white text-slate-900 placeholder-slate-400' />
                                     </div>
-                                    <label htmlFor='image-2'>Image 2</label>
+
+                                    <div className='flex flex-col'>
+                                        <label htmlFor="age" className='text-sm font-bold text-slate-700 mb-2 block'>Age (Years)</label>
+                                        <input
+                                            type="number"
+                                            id="age"
+                                            name="age"
+                                            value={formData.age}
+                                            onChange={handleChange}
+                                            placeholder='e.g., 3'
+                                            className='px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all duration-200 bg-slate-50 hover:bg-white text-slate-900 placeholder-slate-400' />
+                                    </div>
                                 </div>
 
-                                <div className='flex flex-col gap-1 justify-center items-center'>
-                                    <div>
-                                        <ImageUpload onFileSelect={(file) => handleImageSelect(2, file)} />
+                                {/* Row 3: Location and Status */}
+                                <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
+                                    <div className='flex flex-col'>
+                                        <label htmlFor="location" className='text-sm font-bold text-slate-700 mb-2 block'>Location</label>
+                                        <input
+                                            type="text"
+                                            id="location"
+                                            name="location"
+                                            value={formData.location}
+                                            onChange={handleChange}
+                                            placeholder='e.g., San Francisco, CA'
+                                            className='px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all duration-200 bg-slate-50 hover:bg-white text-slate-900 placeholder-slate-400' />
                                     </div>
-                                    <label htmlFor='image-3'>Image 3</label>
+
+                                    <div className='flex flex-col'>
+                                        <label htmlFor="status" className='text-sm font-bold text-slate-700 mb-2 block'>Status</label>
+                                        <select
+                                            id="status"
+                                            name="status"
+                                            value={formData.status}
+                                            onChange={handleChange}
+                                            className='px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all duration-200 bg-slate-50 hover:bg-white text-slate-900 font-medium cursor-pointer'>
+                                            <option value="AVAILABLE">Available</option>
+                                            <option value="ADOPTED">Adopted</option>
+                                        </select>
+                                    </div>
                                 </div>
 
-                            </div>
-                        </span>
+                                {/* Row 4: Price */}
+                                <div className='flex flex-col'>
+                                    <label htmlFor="price" className='text-sm font-bold text-slate-700 mb-2 block'>Price (Leave Blank for Free)</label>
+                                    <div className='relative'>
+                                        <span className='absolute left-4 top-3 text-slate-500 font-bold'>💰</span>
+                                        <input
+                                            type="number"
+                                            id="price"
+                                            name="price"
+                                            value={formData.price}
+                                            onChange={handleChange}
+                                            placeholder='0'
+                                            className='w-full pl-10 pr-4 py-3 border-2 border-slate-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all duration-200 bg-slate-50 hover:bg-white text-slate-900' />
+                                    </div>
+                                </div>
 
-                        {/*Health Information Section*/}
-                        <span className='flex flex-col gap-2 h-full border-solid border-2 border-gray-300 p-4 md:p-5 rounded-lg shadow-gray-500 shadow-lg'>
-
-                            <div className='flex flex-row justify-center'>
-                                <div className='text-xl md:text-2xl font-bold m-2'>Health Information</div>
-                            </div>
-
-                            <div className='flex flex-col sm:flex-row justify-center gap-4 sm:gap-0'>
-
-                                <div className='flex flex-row items-center-safe sm:mr-10'>
-                                    <input type='checkbox'
-                                        id='vaccinated'
-                                        name='vaccinated'
-                                        checked={formData.vaccinated}
+                                {/* Description */}
+                                <div className='flex flex-col'>
+                                    <label htmlFor="description" className='text-sm font-bold text-slate-700 mb-2 block'>Description</label>
+                                    <textarea
+                                        id="description"
+                                        name="description"
+                                        value={formData.description}
                                         onChange={handleChange}
-                                        className=' hover:accent-black size-5 accent-purple-500'
+                                        placeholder='Tell us about your pet... personality, temperament, special needs, etc.'
+                                        className='px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all duration-200 bg-slate-50 hover:bg-white text-slate-900 placeholder-slate-400 resize-none h-32'
                                     />
-                                    <label htmlFor='vaccinated' className='ml-2'>Vaccinated</label></div>
+                                </div>
+                            </div>
+                        </div>
 
-                                <div className='flex flex-row items-center-safe sm:ml-10'>
-                                    <input type='checkbox'
-                                        id='neutered'
-                                        name='neutered'
-                                        checked={formData.neutered}
+                        {/* Health Information Card */}
+                        <div className='bg-white rounded-2xl p-7 shadow-sm border border-slate-100 hover:shadow-lg hover:shadow-blue-100 transition-all duration-300'>
+                            <div className='flex items-center gap-3 mb-6'>
+                                <div className='w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center text-white font-bold'>
+                                    ❤️
+                                </div>
+                                <h2 className='text-2xl font-bold text-slate-900'>Health Information</h2>
+                            </div>
+
+                            <div className='space-y-5'>
+                                {/* Health Checkboxes */}
+                                <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+                                    <label className='flex items-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg border-2 border-green-200 hover:border-green-400 cursor-pointer transition-all duration-200 hover:shadow-md group'>
+                                        <input 
+                                            type='checkbox'
+                                            id='vaccinated'
+                                            name='vaccinated'
+                                            checked={formData.vaccinated}
+                                            onChange={handleChange}
+                                            className='w-5 h-5 accent-green-500 cursor-pointer' 
+                                        />
+                                        <span className='ml-3 font-semibold text-slate-700 group-hover:text-green-600 transition-colors'>Vaccinated</span>
+                                    </label>
+
+                                    <label className='flex items-center p-4 bg-gradient-to-br from-orange-50 to-amber-50 rounded-lg border-2 border-orange-200 hover:border-orange-400 cursor-pointer transition-all duration-200 hover:shadow-md group'>
+                                        <input 
+                                            type='checkbox'
+                                            id='neutered'
+                                            name='neutered'
+                                            checked={formData.neutered}
+                                            onChange={handleChange}
+                                            className='w-5 h-5 accent-orange-500 cursor-pointer' 
+                                        />
+                                        <span className='ml-3 font-semibold text-slate-700 group-hover:text-orange-600 transition-colors'>Neutered/Spayed</span>
+                                    </label>
+                                </div>
+
+                                {/* Health Notes */}
+                                <div className='flex flex-col'>
+                                    <label htmlFor="health_notes" className='text-sm font-bold text-slate-700 mb-2 block'>Additional Health Notes</label>
+                                    <textarea
+                                        id="health_notes"
+                                        name="health_notes"
+                                        value={formData.health_notes}
                                         onChange={handleChange}
-                                        className=' hover:accent-black size-5 accent-purple-500'
+                                        placeholder='Any medical conditions, allergies, or special care instructions...'
+                                        className='px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all duration-200 bg-slate-50 hover:bg-white text-slate-900 placeholder-slate-400 resize-none h-28'
                                     />
-                                    <label htmlFor='neutered' className='ml-2'>Neutered/Spayed</label></div>
-
+                                </div>
                             </div>
-
-                            <div className='flex flex-col'>
-                                <div className='left-auto'>Additional Health Notes</div>
-                                <textarea
-                                    id="health-notes"
-                                    name="health_notes"
-                                    value={formData.health_notes}
-                                    onChange={handleChange}
-                                    className='border-solid border-2 border-gray-300 rounded-md p-1 w-full h-24 md:h-32'
-                                ></textarea>
-                            </div>
-                        </span>
-
-                        {/*Submit Button*/}
-                        <div className='flex justify-center items-center'>
-                            <button
-                                type="submit"
-                                disabled={uploading}
-                                className={`text-white text-lg md:text-2xl font-bold px-5 py-2 rounded-md w-full shadow-lg ${
-                                    uploading 
-                                        ? 'bg-gray-400 cursor-not-allowed' 
-                                        : 'bg-purple-500 hover:bg-purple-800 shadow-purple-300'
-                                }`}
-                            >
-                                {uploading ? 'Uploading Images...' : (isEditMode ? 'Update Pet' : 'Add Pet')}
-                            </button>
                         </div>
                     </div>
 
+                    {/*Right Side Section - Images*/}
+                    <div className='lg:col-span-1'>
+                        {/* Upload Images Card */}
+                        <div className='bg-white rounded-2xl p-7 shadow-sm border border-slate-100 hover:shadow-lg hover:shadow-pink-100 transition-all duration-300 sticky top-20'>
+                            <div className='flex items-center gap-3 mb-6'>
+                                <div className='w-10 h-10 bg-gradient-to-br from-pink-500 to-rose-500 rounded-lg flex items-center justify-center text-white font-bold'>
+                                    🖼️
+                                </div>
+                                <h2 className='text-2xl font-bold text-slate-900'>Pet Photos</h2>
+                            </div>
 
+                            <p className='text-sm text-slate-600 mb-6'>Upload up to 3 photos to showcase your pet. Photos help find the perfect match faster!</p>
 
+                            <div className='space-y-4'>
+                                {[
+                                    { index: 0, label: 'Primary Photo', emoji: '📷' },
+                                    { index: 1, label: 'Secondary Photo', emoji: '📸' },
+                                    { index: 2, label: 'Additional Photo', emoji: '🎞️' }
+                                ].map(({ index, label, emoji }) => (
+                                    <div key={index} className='group'>
+                                        <label className='flex items-center gap-3 p-4 bg-gradient-to-br from-pink-50 to-rose-50 rounded-lg border-2 border-dashed border-pink-200 hover:border-pink-400 cursor-pointer transition-all duration-200 hover:shadow-md'>
+                                            <div className='text-2xl'>{emoji}</div>
+                                            <div className='flex-1'>
+                                                <p className='font-semibold text-slate-900'>{label}</p>
+                                                <p className='text-xs text-slate-500'>Click to upload</p>
+                                            </div>
+                                            <div className='hidden group-hover:block'>
+                                                <span className='text-sm font-bold text-pink-500'>→</span>
+                                            </div>
+                                        </label>
+                                        <div className='mt-2'>
+                                            <ImageUpload onFileSelect={(file) => handleImageSelect(index, file)} />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className='mt-6 p-4 bg-blue-50 rounded-lg border-2 border-blue-200'>
+                                <p className='text-xs text-blue-700 font-semibold'>💡 Pro Tip: Use clear, well-lit photos of your pet from different angles for best results!</p>
+                            </div>
+                        </div>
+                    </div>
                 </form>
 
-            </div>
+                {/* Submit Button Section */}
+                <div className='w-full max-w-7xl mt-8 flex flex-col sm:flex-row gap-4'>
+                    <button
+                        type="button"
+                        onClick={() => navigate(isEditMode ? '/profile' : '/browse-pets')}
+                        className='flex-1 py-3 px-6 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg transition-all duration-200 flex items-center justify-center gap-2 active:scale-95 border border-slate-200'
+                    >
+                        ← {isEditMode ? 'Back to Profile' : 'Cancel'}
+                    </button>
+                    <button
+                        form="pet-form"
+                        type="submit"
+                        disabled={uploading}
+                        className={`flex-1 py-3 px-6 font-bold rounded-lg transition-all duration-200 flex items-center justify-center gap-2 active:scale-95 text-lg shadow-lg ${
+                            uploading 
+                                ? 'bg-slate-300 cursor-not-allowed text-slate-600' 
+                                : 'bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white shadow-purple-300 hover:shadow-lg'
+                        }`}
+                    >
+                        {uploading ? (
+                            <>
+                                <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin'></div>
+                                Uploading...
+                            </>
+                        ) : (
+                            <>
+                                {isEditMode ? '✏️ Update Pet' : '➕ Add Pet'}
+                            </>
+                        )}
+                    </button>
+                </div>
 
-  
+            </div>
         </div>
     );
 }
