@@ -26,6 +26,16 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
+export { AuthContext };
+
+export const useAuthContext = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    console.warn('useAuthContext must be used within AuthProvider');
+  }
+  return context;
+};
+
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuth, setIsAuth] = useState(false);

@@ -1,9 +1,15 @@
 import ImageUpload from '../components/ImageUpload';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { API_ENDPOINTS } from '../config/api';
 import { getCookie } from '../utils/cookies';
 
 function AddPets() {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [editingPetId, setEditingPetId] = useState<number | null>(null);
+
     const [formData, setFormData] = useState({
         name: '',
         type: '',
@@ -15,11 +21,36 @@ function AddPets() {
         vaccinated: false,
         neutered: false,
         health_notes: '',
+        status: 'AVAILABLE',
     });
 
     const [images, setImages] = useState<(File | null)[]>([null, null, null]);
     const [uploading, setUploading] = useState(false);
-    const [imageUrls, setImageUrls] = useState<string[]>([]);
+
+    // Check if we're editing a pet
+    useEffect(() => {
+        const editingPet = (location.state as any)?.editingPet;
+        if (editingPet) {
+            setIsEditMode(true);
+            setEditingPetId(editingPet.id);
+            const statusValue = editingPet.status === 'Available' ? 'AVAILABLE' : 'ADOPTED';
+            setFormData({
+                name: editingPet.name || '',
+                type: editingPet.type || '',
+                breed: editingPet.breed || '',
+                age: editingPet.age?.toString() || '',
+                location: editingPet.location || '',
+                price: editingPet.price?.toString() || '',
+                description: editingPet.description || '',
+                vaccinated: editingPet.vaccinated || false,
+                neutered: editingPet.neutered || false,
+                health_notes: editingPet.health_notes || '',
+                status: statusValue,
+            });
+            // Clear images array since editing doesn't pre-populate images
+            setImages([null, null, null]);
+        }
+    }, [location.state]);
 
     const handleImageSelect = (index: number, file: File) => {
         setImages(prev => {
@@ -69,7 +100,6 @@ function AddPets() {
                 }
             }
 
-            setImageUrls(uploadedUrls);
             return uploadedUrls;
         } catch (err) {
             console.error('Error uploading images:', err);
@@ -129,14 +159,21 @@ function AddPets() {
                 vaccinated: formData.vaccinated,
                 neutered: formData.neutered,
                 health_notes: formData.health_notes,
+                status: formData.status,
                 // Store all uploaded images as JSON string in ImageUrl field
                 ...(uploadedImageUrls.length > 0 && { imageUrl: JSON.stringify(uploadedImageUrls) }),
             };
 
-            console.log('Creating pet with data:', jsonData);
+            console.log(isEditMode ? 'Updating pet with data:' : 'Creating pet with data:', jsonData);
             
-            const response = await fetch(API_ENDPOINTS.pets.create, {
-                method: "POST",
+            const endpoint = isEditMode && editingPetId 
+                ? API_ENDPOINTS.pets.update(editingPetId.toString())
+                : API_ENDPOINTS.pets.create;
+            
+            const method = isEditMode ? 'PUT' : 'POST';
+
+            const response = await fetch(endpoint, {
+                method: method,
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json',
@@ -150,7 +187,7 @@ function AddPets() {
                 console.error('Response status:', response.status, response.statusText);
                 console.error('Response body:', responseText);
                 
-                let errorMessage = 'Failed to add pet';
+                let errorMessage = isEditMode ? 'Failed to update pet' : 'Failed to add pet';
                 
                 // Try to parse as JSON
                 try {
@@ -182,7 +219,7 @@ function AddPets() {
                 return;
             }
 
-            alert('Pet added successfully 🐾');
+            alert(isEditMode ? 'Pet updated successfully 🐾' : 'Pet added successfully 🐾');
 
             // Reset form after successful submission
             setFormData({
@@ -196,9 +233,14 @@ function AddPets() {
                 vaccinated: false,
                 neutered: false,
                 health_notes: '',
+                status: 'AVAILABLE',
             });
             setImages([null, null, null]);
-            setImageUrls([]);
+            
+            // Navigate back to profile if editing
+            if (isEditMode) {
+                navigate('/profile');
+            }
         } catch (err) {
             console.error('Error:', err);
             const errorMessage = err instanceof Error ? err.message : 'Something went wrong. Please check your connection and try again.';
@@ -215,8 +257,8 @@ function AddPets() {
         <div className='min-h-screen overflow-auto'>
             <div className='p-4 md:p-10 pt-16 md:pt-20 flex flex-col text-black justify-center items-center'>
                 <div className='flex flex-col items-center gap-2'>
-                    <h1 className='text-xl md:text-2xl font-bold'>Add Your Pets</h1>
-                    <div className='text-lg md:text-2xl text-center'>Help your pet find the perfect new home</div>
+                    <h1 className='text-xl md:text-2xl font-bold'>{isEditMode ? 'Edit Pet' : 'Add Your Pets'}</h1>
+                    <div className='text-lg md:text-2xl text-center'>{isEditMode ? 'Update your pet\'s information' : 'Help your pet find the perfect new home'}</div>
                 </div>
 
                 <form action=""
@@ -310,7 +352,21 @@ function AddPets() {
                                     onChange={handleChange}
                                     className='border-solid border-2 border-gray-300 rounded-md p-1 w-full' />
                             </div>
+                        </div>
 
+                        <div className='flex flex-col md:flex-row gap-4 md:gap-20'>
+                            <div className='flex flex-col w-full md:w-auto'>
+                                <label htmlFor="status">Status</label>
+                                <select
+                                    id="status"
+                                    name="status"
+                                    value={formData.status}
+                                    onChange={handleChange}
+                                    className='border-solid border-2 border-gray-300 rounded-md p-1 w-full' >
+                                    <option value="AVAILABLE">Available</option>
+                                    <option value="ADOPTED">Adopted</option>
+                                </select>
+                            </div>
                         </div>
                     </span>
 
@@ -401,7 +457,7 @@ function AddPets() {
                                         : 'bg-purple-500 hover:bg-purple-800 shadow-purple-300'
                                 }`}
                             >
-                                {uploading ? 'Uploading Images...' : 'Add Pet'}
+                                {uploading ? 'Uploading Images...' : (isEditMode ? 'Update Pet' : 'Add Pet')}
                             </button>
                         </div>
                     </div>
