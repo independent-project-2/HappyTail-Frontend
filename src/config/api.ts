@@ -19,6 +19,7 @@ export const API_ENDPOINTS = {
     update: (id: string) => `${BASE_URL}/api/Pet/update/${id}`,
     delete: (id: string) => `${BASE_URL}/api/Pet/delete/${id}`,
     filter: `${BASE_URL}/api/Pet/filter`,
+    uploadImage: `${BASE_URL}/api/Pet/upload-image`,
   },
   blog: {
     getAll: `${BASE_URL}/api/blog`,

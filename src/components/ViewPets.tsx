@@ -14,6 +14,7 @@ interface PetData {
   neutered?: boolean;
   health_notes?: string;
   images?: string[];
+  imageUrl?: string;
 }
 
 export default function ViewPets({ onClose, petData }: { onClose: () => void; petData?: PetData }) {
@@ -28,22 +29,48 @@ export default function ViewPets({ onClose, petData }: { onClose: () => void; pe
   }
 
   const handlePrevImage = () => {
-    if (petData?.images && petData.images.length > 0) {
-      setCurrentImageIndex((prev) => (prev === 0 ? petData.images!.length - 1 : prev - 1));
+    const imageArray = getImageArray();
+    if (imageArray.length > 0) {
+      setCurrentImageIndex((prev) => (prev === 0 ? imageArray.length - 1 : prev - 1));
     }
   };
 
   const handleNextImage = () => {
-    if (petData?.images && petData.images.length > 0) {
-      setCurrentImageIndex((prev) => (prev === petData.images!.length - 1 ? 0 : prev + 1));
+    const imageArray = getImageArray();
+    if (imageArray.length > 0) {
+      setCurrentImageIndex((prev) => (prev === imageArray.length - 1 ? 0 : prev + 1));
     }
   };
 
-  const currentImage = petData?.images && petData.images.length > 0 
-    ? petData.images[currentImageIndex] 
+  const getImageArray = (): string[] => {
+    // First check if images is an array
+    if (petData?.images && Array.isArray(petData.images) && petData.images.length > 0) {
+      return petData.images;
+    }
+    
+    // Then check if imageUrl contains JSON array
+    if (petData?.imageUrl) {
+      try {
+        const parsed = JSON.parse(petData.imageUrl);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      } catch (e) {
+        // Not JSON, treat as single URL
+      }
+      // If it's a single URL string, return it as array
+      return [petData.imageUrl];
+    }
+    
+    return [];
+  };
+
+  const imageArray = getImageArray();
+  const currentImage = imageArray.length > 0 
+    ? imageArray[currentImageIndex] 
     : '../../assets/images/germen-sheperd.jpg';
 
-  const totalImages = petData?.images?.length || 1;
+  const totalImages = imageArray.length || 1;
 
   return (
     <div ref={viewPetsRef} onClick={closeViewPets} className='fixed inset-0 bg-opacity-30 backdrop-blur-sm z-50 flex items-center justify-center'>
@@ -55,6 +82,10 @@ export default function ViewPets({ onClose, petData }: { onClose: () => void; pe
           <img src={currentImage}
             alt={petData?.name || 'Pet'}
             className='rounded-xl w-96 h-96 object-cover'
+            onError={(e) => {
+              const img = e.target as HTMLImageElement;
+              img.src = '../../assets/images/germen-sheperd.jpg';
+            }}
           ></img>
 
           <div className='flex flex-row gap-3 mt-4 cursor-pointer'>

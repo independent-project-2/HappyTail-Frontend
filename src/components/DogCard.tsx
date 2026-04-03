@@ -14,6 +14,7 @@ interface PetData {
   neutered?: boolean;
   health_notes?: string;
   images?: string[];
+  imageUrl?: string;
 }
 
 interface DogCardProps {
@@ -38,7 +39,28 @@ export default function DogCard(
     }
 
     // Use petData if provided, otherwise fall back to individual props
-    const image = props.petData?.images?.[0] || props.imageUrl;
+    let image = props.imageUrl || props.address;
+    
+    if (props.petData) {
+      // Try to extract image from petData
+      if (props.petData.images && Array.isArray(props.petData.images) && props.petData.images.length > 0) {
+        image = props.petData.images[0];
+      } else if (props.petData.imageUrl) {
+        // Check if imageUrl is a JSON array
+        try {
+          const parsed = JSON.parse(props.petData.imageUrl);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            image = parsed[0];
+          } else {
+            image = props.petData.imageUrl;
+          }
+        } catch (e) {
+          // Not JSON, use as is
+          image = props.petData.imageUrl;
+        }
+      }
+    }
+    
     const type = props.petData?.type || props.dogType;
     const address = props.petData?.location || props.address;
     const description = props.petData?.description || props.description;
@@ -52,6 +74,10 @@ export default function DogCard(
                     src={image}
                     alt={type || "Pet Image"}
                     className="w-full object-cover"
+                    onError={(e) => {
+                        const img = e.target as HTMLImageElement;
+                        img.src = '../../assets/images/germen-sheperd.jpg';
+                    }}
                 />
 
                 <div className="p-4 flex flex-col gap-2">

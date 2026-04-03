@@ -18,7 +18,8 @@ function AddPets() {
     });
 
     const [images, setImages] = useState<(File | null)[]>([null, null, null]);
-
+    const [uploading, setUploading] = useState(false);
+    const [imageUrls, setImageUrls] = useState<string[]>([]);
 
     const handleImageSelect = (index: number, file: File) => {
         setImages(prev => {
@@ -28,8 +29,55 @@ function AddPets() {
         });
     };
 
+    const uploadImages = async (token: string): Promise<string[]> => {
+        const selectedImages = images.filter(img => img !== null);
+        
+        if (selectedImages.length === 0) {
+            return [];
+        }
 
+        try {
+            setUploading(true);
+            const uploadedUrls: string[] = [];
 
+            for (const image of selectedImages) {
+                const formDataObj = new FormData();
+                formDataObj.append("file", image);
+
+                const response = await fetch(API_ENDPOINTS.pets.uploadImage, {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: formDataObj,
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Image upload failed:', errorText);
+                    throw new Error(`Failed to upload image: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                console.log('Image upload response:', data);
+                
+                // Extract the image URL from the response
+                // Adjust based on your backend's response structure
+                const imageUrl = data.url || data.imageUrl || data.data?.url;
+                if (imageUrl) {
+                    uploadedUrls.push(imageUrl);
+                }
+            }
+
+            setImageUrls(uploadedUrls);
+            return uploadedUrls;
+        } catch (err) {
+            console.error('Error uploading images:', err);
+            throw err;
+        } finally {
+            setUploading(false);
+        }
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value, type, checked } = e.target as HTMLInputElement;
@@ -50,43 +98,26 @@ function AddPets() {
             return;
         }
 
-        // Check if there are any images
-        const hasImages = images.some(img => img !== null);
+        // Check required fields
+        if (!formData.name || !formData.type || !formData.breed) {
+            alert('Please fill in all required fields (Name, Type, Breed)');
+            return;
+        }
 
-        let response;
+        try {
+            setUploading(true);
+            
+            // Upload images first if any are selected
+            let uploadedImageUrls: string[] = [];
+            const hasImages = images.some(img => img !== null);
+            
+            if (hasImages) {
+                console.log('Uploading images to Cloudinary...');
+                uploadedImageUrls = await uploadImages(token);
+                console.log('Images uploaded successfully:', uploadedImageUrls);
+            }
 
-        if (hasImages) {
-            // Use FormData for multipart/form-data when there are images
-            const formDataObj = new FormData();
-
-            formDataObj.append("Name", formData.name);
-            formDataObj.append("Type", formData.type);
-            formDataObj.append("Breed", formData.breed);
-            formDataObj.append("Age", formData.age || "0");
-            formDataObj.append("Location", formData.location);
-            formDataObj.append("Price", formData.price || "0");
-            formDataObj.append("Description", formData.description);
-            formDataObj.append("Vaccinated", String(formData.vaccinated));
-            formDataObj.append("Neutered", String(formData.neutered));
-            formDataObj.append("Health_notes", formData.health_notes);
-
-            // add images
-            images.forEach((file) => {
-                if (file) {
-                    formDataObj.append("Images", file);
-                }
-            });
-
-            console.log('Sending FormData with images');
-            response = await fetch(API_ENDPOINTS.pets.create, {
-                method: "POST",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-                body: formDataObj,
-            });
-        } else {
-            // Use JSON when there are no images
+            // Create pet with image URLs
             const jsonData = {
                 name: formData.name,
                 type: formData.type,
@@ -98,10 +129,13 @@ function AddPets() {
                 vaccinated: formData.vaccinated,
                 neutered: formData.neutered,
                 health_notes: formData.health_notes,
+                // Store all uploaded images as JSON string in ImageUrl field
+                ...(uploadedImageUrls.length > 0 && { imageUrl: JSON.stringify(uploadedImageUrls) }),
             };
 
-            console.log('Sending JSON without images:', jsonData);
-            response = await fetch(API_ENDPOINTS.pets.create, {
+            console.log('Creating pet with data:', jsonData);
+            
+            const response = await fetch(API_ENDPOINTS.pets.create, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -109,9 +143,6 @@ function AddPets() {
                 },
                 body: JSON.stringify(jsonData),
             });
-        }
-
-        try {
 
             if (!response.ok) {
                 // Get response text first (can only read body once)
@@ -166,9 +197,14 @@ function AddPets() {
                 neutered: false,
                 health_notes: '',
             });
+            setImages([null, null, null]);
+            setImageUrls([]);
         } catch (err) {
-            console.error('Network error:', err);
-            alert('Something went wrong. Please check your connection and try again.');
+            console.error('Error:', err);
+            const errorMessage = err instanceof Error ? err.message : 'Something went wrong. Please check your connection and try again.';
+            alert(errorMessage);
+        } finally {
+            setUploading(false);
         }
     };
 
@@ -358,9 +394,14 @@ function AddPets() {
                         <div className='flex justify-center items-center'>
                             <button
                                 type="submit"
-                                className='bg-purple-500 text-white text-lg md:text-2xl font-bold px-5 py-2 rounded-md w-full shadow-lg shadow-purple-300 hover:bg-purple-800'
+                                disabled={uploading}
+                                className={`text-white text-lg md:text-2xl font-bold px-5 py-2 rounded-md w-full shadow-lg ${
+                                    uploading 
+                                        ? 'bg-gray-400 cursor-not-allowed' 
+                                        : 'bg-purple-500 hover:bg-purple-800 shadow-purple-300'
+                                }`}
                             >
-                                Add Pet
+                                {uploading ? 'Uploading Images...' : 'Add Pet'}
                             </button>
                         </div>
                     </div>
